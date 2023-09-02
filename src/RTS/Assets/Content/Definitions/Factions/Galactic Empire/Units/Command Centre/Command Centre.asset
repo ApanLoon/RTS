@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43ad35b63ee930949a6226448f693f07, type: 3}
-  m_Name: Stormtrooper
+  m_Name: Command Centre
   m_EditorClassIdentifier: 
-  Name: Stormtrooper
-  Size: {x: 1, y: 1, z: 2}
+  Name: Command Centre
+  Size: {x: 15, y: 15, z: 7.5}
+  UnitPrefab: {fileID: 4411203511954778571, guid: 0f73978d1ac0a224caed76365629a6e6,
+    type: 3}

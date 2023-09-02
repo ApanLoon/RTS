@@ -11,9 +11,21 @@ public class InputController : MonoBehaviour
 
     public GameObject CursorPrefab;
     public Camera CurrentCamera;
- 
-    public Vector3? MouseHitPosition;
-    public GameObject MouseHitObject;
+
+    /// <summary>
+    /// True if the raycast into the scene hit something this frame.
+    /// </summary>
+    public bool HasMouseHit { get; protected set; }
+
+    /// <summary>
+    /// The world position where the raycast into the scene hit something. Only use if HasMouseHit is true.
+    /// </summary>
+    public Vector3 MouseHitPosition { get; protected set; }
+
+    /// <summary>
+    /// The GameObject the raycast into the scene hit. Only use if HasMouseHit is true.
+    /// </summary>
+    public GameObject MouseHitObject { get; protected set; }
 
     public enum InputState
     {
@@ -64,9 +76,9 @@ public class InputController : MonoBehaviour
         {
             _actionTriggers = new ActionTrigger[]
             {
-                new ActionTrigger() { IsTriggered = false, Action = () => { Debug.Log("OnSelect"); } },
-                new ActionTrigger() { IsTriggered = false, Action = () => { Debug.Log("OnPlace");  SetState(InputState.Select); } },
-                new ActionTrigger() { IsTriggered = false, Action = () => { Debug.Log("OnCancel"); SetState(InputState.Select); } },
+                new ActionTrigger() { IsTriggered = false, Action = DoSelect },
+                new ActionTrigger() { IsTriggered = false, Action = DoPlace  },
+                new ActionTrigger() { IsTriggered = false, Action = DoCancel },
              };
         }
     }
@@ -128,12 +140,13 @@ public class InputController : MonoBehaviour
             return;
         }
 
-        MouseHitPosition = null;
+        HasMouseHit = false;
         MouseHitObject = null;
         if (Physics.Raycast(CurrentCamera.ScreenPointToRay(_mousePos), out RaycastHit hit))
         {
             MouseHitPosition = hit.point;
             MouseHitObject = hit.collider.gameObject;
+            HasMouseHit = true;
 
             _cursor.transform.position = hit.point;
             _cursor.SetProjector(FactionController.Instance.CurrentFaction.DecalMaterial, UnitToPlace.Size.x, UnitToPlace.Size.y);
@@ -141,10 +154,12 @@ public class InputController : MonoBehaviour
         }
         else
         {
+            HasMouseHit = false;
             _cursor.gameObject.SetActive(false);
         }
     }
 
+    #region InputActions
     private void OnMousePos(InputValue inputValue)
     {
         _mousePos = inputValue.Get<Vector2>();
@@ -163,6 +178,26 @@ public class InputController : MonoBehaviour
     private void OnCancel()
     {
         _actionTriggers[(int)ActionTriggerId.OnCancel].IsTriggered = true;
+    }
+    #endregion InputActions
+
+    private void DoSelect()
+    {
+        Debug.Log("OnSelect");
+    }
+
+    private void DoPlace()
+    {
+        Debug.Log("OnPlace");
+        // TODO: It should probably not be the InputController that actually spawns the unit...
+        var go = Instantiate(UnitToPlace.UnitPrefab, MouseHitPosition, Quaternion.identity);
+        SetState(InputState.Select);
+    }
+
+    private void DoCancel()
+    {
+        Debug.Log("OnCancel");
+        SetState(InputState.Select);
     }
 
     private void SetState(InputState state)
