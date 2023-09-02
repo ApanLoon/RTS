@@ -1,3 +1,4 @@
+using System;
 using TMPro.EditorUtilities;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -25,6 +26,14 @@ public class InputController : MonoBehaviour
     private Cursor _cursor;
     private Vector2 _mousePos;
 
+    private class ActionTrigger
+    {
+        public bool IsTriggered;
+        public Action Action;
+    }
+    private enum ActionTriggerId { OnSelect, OnPlace, OnCancel };
+    private ActionTrigger[] _actionTriggers;
+
     public UnitDefinition UnitToPlace {  get; protected set; }
 
 
@@ -33,6 +42,7 @@ public class InputController : MonoBehaviour
         "Select",
         "Place"
     };
+    private bool _onCancel;
 
     private void OnEnable()
     {
@@ -48,6 +58,16 @@ public class InputController : MonoBehaviour
         {
             GameObject gameObject = Instantiate(CursorPrefab, Vector3.zero, Quaternion.identity, transform);
             _cursor = gameObject.GetComponent<Cursor>();
+        }
+
+        if (_actionTriggers == null)
+        {
+            _actionTriggers = new ActionTrigger[]
+            {
+                new ActionTrigger() { IsTriggered = false, Action = () => { Debug.Log("OnSelect"); } },
+                new ActionTrigger() { IsTriggered = false, Action = () => { Debug.Log("OnPlace");  SetState(InputState.Select); } },
+                new ActionTrigger() { IsTriggered = false, Action = () => { Debug.Log("OnCancel"); SetState(InputState.Select); } },
+             };
         }
     }
 
@@ -71,6 +91,18 @@ public class InputController : MonoBehaviour
 
     private void Update()
     {
+        foreach (var actionTrigger in _actionTriggers)
+        {
+            if (actionTrigger.IsTriggered)
+            {
+                actionTrigger.IsTriggered = false;
+                if (EventSystem.current.IsPointerOverGameObject() == false) // TODO: This is an ugly way to do it, what if the action is not triggered by a click or anything else that should be eaten by the UI? For example OnCancel whitch triggers on the escape key.
+                {
+                    actionTrigger.Action();
+                }
+            }
+        }
+
         switch (State)
         {
             case InputState.Select:
@@ -120,19 +152,17 @@ public class InputController : MonoBehaviour
 
     private void OnSelect()
     {
-        Debug.Log("OnSelect");
+        _actionTriggers[(int)ActionTriggerId.OnSelect].IsTriggered = true;
     }
 
     private void OnPlace()
     {
-        Debug.Log("OnPlace");
-        SetState(InputState.Select);
+        _actionTriggers[(int)ActionTriggerId.OnPlace].IsTriggered = true;
     }
 
     private void OnCancel()
     {
-        Debug.Log("OnCancel");
-        SetState(InputState.Select);
+        _actionTriggers[(int)ActionTriggerId.OnCancel].IsTriggered = true;
     }
 
     private void SetState(InputState state)
