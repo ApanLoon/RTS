@@ -7,46 +7,48 @@ public class InputController : MonoBehaviour
 {
     public static InputController Instance;
 
-    public GameObject CursorPrefab;
     public Camera CurrentCamera;
-    public UnitDefinition UnitToPlace { get; protected set; }
 
     #region events
     public event Action<Vector2, float> OnCameraPan;
     public event Action<bool, Vector2, float> OnCameraOrbit;
     public event Action<float> OnCameraDolly;
+
+    public event Action<bool> OnMouseRayHitChanged;
+    public event Action OnSelect;
+    public event Action OnPlace;
+    public event Action OnCancel;
     #endregion events
 
     /// <summary>
     /// True if the raycast into the scene hit something this frame.
     /// </summary>
-    public bool HasMouseHit { get; protected set; }
+    public bool HasMouseRayHit { get; protected set; }
 
     /// <summary>
     /// The world position where the raycast into the scene hit something. Only use if HasMouseHit is true.
     /// </summary>
-    public Vector3 MouseHitPosition { get; protected set; }
+    public Vector3 MouseRayHitPosition { get; protected set; }
 
     /// <summary>
     /// The GameObject the raycast into the scene hit. Only use if HasMouseHit is true.
     /// </summary>
-    public GameObject MouseHitObject { get; protected set; }
+    public GameObject MouseRayHitObject { get; protected set; }
 
-    public enum InputState
+    public enum ActionMapId
     {
         Select,
         Place
     }
-    public InputState State { get; protected set; }
+    public ActionMapId CurrentActionMapId { get; protected set; }
 
     private PlayerInput _playerInput;
-    private Cursor _cursor;
+    
     private Vector2 _mousePos;
     private Vector2 _cameraMove;
-    private bool _onCameraOrbitTrigger;
-    private bool _prevOnCameraOrbitTrigger;
+    private bool _onCameraOrbit;
+    private bool _prevOnCameraOrbit;
     private float _cameraDolly;
-    private float _prevCameraDolly;
 
     private class ActionTrigger
     {
@@ -56,13 +58,17 @@ public class InputController : MonoBehaviour
     private enum ActionTriggerId { OnSelect, OnPlace, OnCancel };
     private ActionTrigger[] _actionTriggers;
 
-
-
     private string[] _actionMapNames =     // Must match InputState
     {
         "Select",
         "Place"
     };
+
+    public void SetActionMap(ActionMapId state)
+    {
+        CurrentActionMapId = state;
+        _playerInput.currentActionMap = _playerInput.actions.FindActionMap(_actionMapNames[(int)CurrentActionMapId]);
+    }
 
     private void OnEnable()
     {
@@ -74,19 +80,13 @@ public class InputController : MonoBehaviour
         }
         Instance = this;
 
-        if (_cursor == null)
-        {
-            GameObject gameObject = Instantiate(CursorPrefab, Vector3.zero, Quaternion.identity, transform);
-            _cursor = gameObject.GetComponent<Cursor>();
-        }
-
         if (_actionTriggers == null)
         {
             _actionTriggers = new ActionTrigger[]
             {
-                new ActionTrigger() { IsTriggered = false, Action = DoSelect },
-                new ActionTrigger() { IsTriggered = false, Action = DoPlace  },
-                new ActionTrigger() { IsTriggered = false, Action = DoCancel },
+                new ActionTrigger() { IsTriggered = false, Action = () => {OnSelect?.Invoke(); } },
+                new ActionTrigger() { IsTriggered = false, Action = () => {OnPlace?.Invoke();  } },
+                new ActionTrigger() { IsTriggered = false, Action = () => {OnCancel?.Invoke(); } },
              };
         }
     }
@@ -106,13 +106,20 @@ public class InputController : MonoBehaviour
 
         _playerInput = GetComponent<PlayerInput>();
 
-        SetState(InputState.Select);
+        SetActionMap(ActionMapId.Select);
     }
 
     private void Update()
     {
         float deltaTime = Time.deltaTime; // TODO: Add pause/speed control here
 
+        Update_ActionTriggers();
+        Update_MouseRaycast();
+        Update_Camera(deltaTime);
+    }
+
+    private void Update_ActionTriggers()
+    {
         foreach (var actionTrigger in _actionTriggers)
         {
             if (actionTrigger.IsTriggered)
@@ -124,50 +131,23 @@ public class InputController : MonoBehaviour
                 }
             }
         }
-
-        switch (State)
-        {
-            case InputState.Select:
-                Update_Select(deltaTime);
-                Update_Camera(deltaTime);
-                break;
-            case InputState.Place:
-                Update_Place(deltaTime);
-                Update_Camera(deltaTime);
-                break;
-            default:
-                break;
-        }
     }
 
-    private void Update_Select(float deltaTime)
+    private void Update_MouseRaycast()
     {
+        bool hasMouseRayHit = false;
 
-    }
-
-    private void Update_Place(float deltaTime)
-    {
-        if (UnitToPlace == null)
-        {
-            return;
-        }
-
-        HasMouseHit = false;
-        MouseHitObject = null;
         if (Physics.Raycast(CurrentCamera.ScreenPointToRay(_mousePos), out RaycastHit hit))
         {
-            MouseHitPosition = hit.point;
-            MouseHitObject = hit.collider.gameObject;
-            HasMouseHit = true;
-
-            _cursor.transform.position = hit.point;
-            _cursor.SetProjector(FactionController.Instance.CurrentFaction.DecalMaterial, UnitToPlace.Size.x, UnitToPlace.Size.y);
-            _cursor.gameObject.SetActive(true);
+            MouseRayHitPosition = hit.point;
+            MouseRayHitObject = hit.collider.gameObject;
+            hasMouseRayHit = true;
         }
-        else
+
+        if (hasMouseRayHit != HasMouseRayHit)
         {
-            HasMouseHit = false;
-            _cursor.gameObject.SetActive(false);
+            HasMouseRayHit = hasMouseRayHit;
+            OnMouseRayHitChanged?.Invoke(hasMouseRayHit);
         }
     }
 
@@ -178,95 +158,48 @@ public class InputController : MonoBehaviour
             OnCameraPan?.Invoke(_cameraMove, deltaTime);
         }
 
-        if (_onCameraOrbitTrigger == true || _prevOnCameraOrbitTrigger == true)
+        if (_onCameraOrbit == true || _prevOnCameraOrbit == true)
         {
-            OnCameraOrbit?.Invoke(_onCameraOrbitTrigger, _mousePos, deltaTime);
-            _prevOnCameraOrbitTrigger = _onCameraOrbitTrigger;
+            OnCameraOrbit?.Invoke(_onCameraOrbit, _mousePos, deltaTime);
+            _prevOnCameraOrbit = _onCameraOrbit;
         }
     }
 
     #region InputActions
-    private void OnMousePos(InputValue inputValue)
+    private void OnMousePosAction(InputValue inputValue)
     {
         _mousePos = inputValue.Get<Vector2>();
     }
 
-    private void OnCameraMove(InputValue inputValue)
+    private void OnCameraMoveAction(InputValue inputValue)
     {
         _cameraMove = inputValue.Get<Vector2>();
     }
 
-    private void OnCameraOrbitTrigger(InputValue inputValue)
+    private void OnCameraOrbitAction(InputValue inputValue)
     {
-        _onCameraOrbitTrigger = inputValue.Get<float>() == 1f;
+        _onCameraOrbit = inputValue.Get<float>() == 1f;
     }
 
-    private void OnCameraDollyTrigger(InputValue inputValue)
+    private void OnCameraDollyAction(InputValue inputValue)
     {
         _cameraDolly = Mathf.Clamp(inputValue.Get<float>(), -1f, 1f);
         OnCameraDolly?.Invoke(_cameraDolly);
     }
 
-
-    private void OnSelect()
+    private void OnSelectAction()
     {
         _actionTriggers[(int)ActionTriggerId.OnSelect].IsTriggered = true;
     }
 
-    private void OnPlace()
+    private void OnPlaceAction()
     {
         _actionTriggers[(int)ActionTriggerId.OnPlace].IsTriggered = true;
     }
 
-    private void OnCancel()
+    private void OnCancelAction()
     {
         _actionTriggers[(int)ActionTriggerId.OnCancel].IsTriggered = true;
     }
     #endregion InputActions
-
-    private void DoSelect()
-    {
-        Debug.Log("OnSelect");
-    }
-
-    private void DoPlace()
-    {
-        Debug.Log("OnPlace");
-        // TODO: It should probably not be the InputController that actually spawns the unit...
-        var go = Instantiate(UnitToPlace.UnitPrefab, MouseHitPosition, Quaternion.identity);
-        SetState(InputState.Select);
-    }
-
-    private void DoCancel()
-    {
-        Debug.Log("OnCancel");
-        SetState(InputState.Select);
-    }
-
-    private void SetState(InputState state)
-    {
-        // Leave state:
-        switch (State)
-        {
-            case InputState.Select:
-                break;
-            case InputState.Place:
-                _cursor.gameObject.SetActive(false);
-                break;
-            default:
-                break;
-        }
-
-        // Enter state:
-        State = state;
-        _playerInput.currentActionMap = _playerInput.actions.FindActionMap(_actionMapNames[(int)State]);
-
-    }
-
-    public void SetPlaceUnit(UnitDefinition unitDefinition)
-    {
-        Debug.Log("SetPlaceUnit: " + unitDefinition.Name);
-        UnitToPlace = unitDefinition;
-        SetState(InputState.Place);
-    }
 }

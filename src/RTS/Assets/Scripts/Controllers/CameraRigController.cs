@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class CameraRigController : MonoBehaviour
@@ -99,7 +98,6 @@ public class CameraRigController : MonoBehaviour
         // Clamp local z-position
         Vector3 pos = _camera.transform.localPosition;
         Vector3 clamped = new Vector3 (pos.x, pos.y, Mathf.Clamp(pos.z, -DollyLimits.y, -DollyLimits.x));
-        //Debug.Log($"OnCameraDolly: pos={pos} clamped={clamped}");
         _camera.transform.localPosition = clamped;
 
         ClampToTerrain();

@@ -17,7 +17,7 @@ public class PlaceUnitPanel : MonoBehaviour
 
             var button = unitButton.GetComponentInChildren<Button>();
             var ud = unitDefinition;
-            button.onClick.AddListener(() => InputController.Instance.SetPlaceUnit(ud));
+            button.onClick.AddListener(() => FactionController.Instance.GetPlayerUnitManager().SetPlaceUnit(ud));
 
             var buttonText = button.GetComponentInChildren<TMP_Text>();
             buttonText.text = unitDefinition.Name;
