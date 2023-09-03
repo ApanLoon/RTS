@@ -240,6 +240,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stormtrooper (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8769757434928121184, guid: 65aed96d566fe7d4ca8dcb29fc1a2577,
+        type: 3}
+      propertyPath: UnitManager
+      value: 
+      objectReference: {fileID: 458246057}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -536,6 +541,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5902746419229246165, guid: 0f73978d1ac0a224caed76365629a6e6,
+        type: 3}
+      propertyPath: UnitManager
+      value: 
+      objectReference: {fileID: 458246057}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1515,6 +1525,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stormtrooper
       objectReference: {fileID: 0}
+    - target: {fileID: 8769757434928121184, guid: 65aed96d566fe7d4ca8dcb29fc1a2577,
+        type: 3}
+      propertyPath: UnitManager
+      value: 
+      objectReference: {fileID: 458246057}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

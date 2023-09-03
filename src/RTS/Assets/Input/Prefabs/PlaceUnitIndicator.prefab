@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8116047461413650757}
   - component: {fileID: 8799883497230479874}
   m_Layer: 6
-  m_Name: Cursor
+  m_Name: PlaceUnitIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4625937204080233118}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa9cea3c65633174e8801398665b8a43, type: 3}
+  m_Script: {fileID: 11500000, guid: ed7b0cf7c0479ac4db94c0d8f5218961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7936724581630449343

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
-public class Cursor : MonoBehaviour
+public class PlaceUnitIndicator : MonoBehaviour
 {
     private DecalProjector _projector;
 
