@@ -44,8 +44,8 @@ public class CameraRigController : MonoBehaviour
         dir.Normalize();
         transform.Translate (dir * PanSpeed * deltaTime, Space.World);
 
-        // TODO: Manage camera collisions
-
+        ClampToTerrain();
+        ManageCollisions();
     }
 
     /// <summary>
@@ -82,11 +82,12 @@ public class CameraRigController : MonoBehaviour
         Vector3 rotEuler = transform.rotation.eulerAngles;
         transform.rotation = Quaternion.Euler(new Vector3(rotEuler.x.ClampAngle(OrbitPitchLimits.x, OrbitPitchLimits.y), rotEuler.y, rotEuler.z));
 
-        // TODO: Manage camera collisions
-
         _camera.transform.LookAt(transform, Vector3.up);
 
         _prevOrbitInput = input;
+
+        ClampToTerrain();
+        ManageCollisions();
     }
 
     private void OnCameraDolly(float input)
@@ -101,7 +102,19 @@ public class CameraRigController : MonoBehaviour
         //Debug.Log($"OnCameraDolly: pos={pos} clamped={clamped}");
         _camera.transform.localPosition = clamped;
 
+        ClampToTerrain();
+        ManageCollisions();
+    }
 
+    private void ManageCollisions()
+    {
         // TODO: Manage camera collisions
+    }
+
+    private void ClampToTerrain()
+    {
+        Vector3 pos = transform.position;
+        pos.y = TerrainManager.Instance.TerrainHeightAt(pos);
+        transform.position = pos;
     }
 }
