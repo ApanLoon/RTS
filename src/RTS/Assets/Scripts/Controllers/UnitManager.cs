@@ -30,6 +30,9 @@ public class UnitManager : MonoBehaviour
     }
     #endregion MonoBehaviour
 
+    #region SelectUnit
+    #endregion SelectUnit
+
     #region PlaceUnit
     public UnitDefinition UnitToPlace { get; protected set; }
 

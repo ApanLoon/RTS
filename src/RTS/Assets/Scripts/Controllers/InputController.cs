@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -43,7 +44,7 @@ public class InputController : MonoBehaviour
     public ActionMapId CurrentActionMapId { get; protected set; }
 
     private PlayerInput _playerInput;
-    
+
     private Vector2 _mousePos;
     private Vector2 _cameraMove;
     private bool _onCameraOrbit;
@@ -64,6 +65,8 @@ public class InputController : MonoBehaviour
         "Place"
     };
 
+    private Dictionary<string, Action<InputAction>> Actions;
+        
     public void SetActionMap(ActionMapId state)
     {
         CurrentActionMapId = state;
@@ -89,6 +92,22 @@ public class InputController : MonoBehaviour
                 new ActionTrigger() { IsTriggered = false, Action = () => {OnCancel?.Invoke(); } },
              };
         }
+
+        if (Actions == null)
+        {
+            Actions = new Dictionary<string, Action<InputAction>>()
+            {
+                { "MousePosAction", OnMousePosAction },
+
+                { "CameraMoveAction",  OnCameraMoveAction  },
+                { "CameraOrbitAction", OnCameraOrbitAction },
+                { "CameraDollyAction", OnCameraDollyAction },
+
+                { "SelectAction", OnSelectAction },
+                { "PlaceAction",  OnPlaceAction  },
+                { "CancelAction", OnCancelAction },
+            };
+        }
     }
 
     private void Start()
@@ -113,9 +132,24 @@ public class InputController : MonoBehaviour
     {
         float deltaTime = Time.deltaTime; // TODO: Add pause/speed control here
 
-        Update_ActionTriggers();
         Update_MouseRaycast();
+
+        Update_RunActions();
+        Update_ActionTriggers();
+
         Update_Camera(deltaTime);
+    }
+
+    private void Update_RunActions()
+    {
+        var map = _playerInput.currentActionMap;
+        foreach (var action in map)
+        {
+            if (action.IsPressed() || action.WasReleasedThisFrame())
+            {
+                Actions[action.name](action);
+            }
+        }
     }
 
     private void Update_ActionTriggers()
@@ -137,7 +171,7 @@ public class InputController : MonoBehaviour
     {
         bool hasMouseRayHit = false;
 
-        if (Physics.Raycast(CurrentCamera.ScreenPointToRay(_mousePos), out RaycastHit hit))
+        if (Physics.Raycast(CurrentCamera.ScreenPointToRay(_mousePos), out RaycastHit hit)) // TODO: Why doesn't this hit UI elements?
         {
             MouseRayHitPosition = hit.point;
             MouseRayHitObject = hit.collider.gameObject;
@@ -166,38 +200,36 @@ public class InputController : MonoBehaviour
     }
 
     #region InputActions
-    private void OnMousePosAction(InputValue inputValue)
+    private void OnMousePosAction(InputAction context)
     {
-        _mousePos = inputValue.Get<Vector2>();
+        _mousePos = context.ReadValue<Vector2>();
+    }
+    private void OnCameraMoveAction(InputAction context)
+    {
+        _cameraMove = context.ReadValue<Vector2>();
+    }
+    private void OnCameraOrbitAction(InputAction context)
+    {
+        _onCameraOrbit = context.ReadValue<float>() == 1f;
     }
 
-    private void OnCameraMoveAction(InputValue inputValue)
+    private void OnCameraDollyAction(InputAction context)
     {
-        _cameraMove = inputValue.Get<Vector2>();
-    }
-
-    private void OnCameraOrbitAction(InputValue inputValue)
-    {
-        _onCameraOrbit = inputValue.Get<float>() == 1f;
-    }
-
-    private void OnCameraDollyAction(InputValue inputValue)
-    {
-        _cameraDolly = Mathf.Clamp(inputValue.Get<float>(), -1f, 1f);
+        _cameraDolly = Mathf.Clamp(context.ReadValue<float>(), -1f, 1f);
         OnCameraDolly?.Invoke(_cameraDolly);
     }
 
-    private void OnSelectAction()
+    private void OnSelectAction(InputAction context)
     {
         _actionTriggers[(int)ActionTriggerId.OnSelect].IsTriggered = true;
     }
 
-    private void OnPlaceAction()
+    private void OnPlaceAction(InputAction context)
     {
         _actionTriggers[(int)ActionTriggerId.OnPlace].IsTriggered = true;
     }
 
-    private void OnCancelAction()
+    private void OnCancelAction(InputAction context)
     {
         _actionTriggers[(int)ActionTriggerId.OnCancel].IsTriggered = true;
     }
