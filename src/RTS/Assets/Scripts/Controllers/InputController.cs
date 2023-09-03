@@ -14,6 +14,7 @@ public class InputController : MonoBehaviour
     #region events
     public event Action<Vector2, float> OnCameraPan;
     public event Action<bool, Vector2, float> OnCameraOrbit;
+    public event Action<float> OnCameraDolly;
     #endregion events
 
     /// <summary>
@@ -44,6 +45,8 @@ public class InputController : MonoBehaviour
     private Vector2 _cameraMove;
     private bool _onCameraOrbitTrigger;
     private bool _prevOnCameraOrbitTrigger;
+    private float _cameraDolly;
+    private float _prevCameraDolly;
 
     private class ActionTrigger
     {
@@ -197,6 +200,13 @@ public class InputController : MonoBehaviour
     {
         _onCameraOrbitTrigger = inputValue.Get<float>() == 1f;
     }
+
+    private void OnCameraDollyTrigger(InputValue inputValue)
+    {
+        _cameraDolly = Mathf.Clamp(inputValue.Get<float>(), -1f, 1f);
+        OnCameraDolly?.Invoke(_cameraDolly);
+    }
+
 
     private void OnSelect()
     {

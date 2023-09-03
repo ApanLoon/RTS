@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CameraRigController : MonoBehaviour
@@ -7,9 +8,16 @@ public class CameraRigController : MonoBehaviour
     public bool InvertPitch = true;
 
     /// <summary>
-    /// Min and max of the camera orbit pitch
+    /// Min and max of the camera orbit pitch in degrees
     /// </summary>
     public Vector2 OrbitPitchLimits = new Vector2(-10, 80);
+
+    public float DollySensitivity = 1.0f;
+    /// <summary>
+    /// Min and max of the camera dolly in meters
+    /// </summary>
+    public Vector2 DollyLimits = new Vector2(2f, 25f);
+
 
     private Camera _camera;
 
@@ -21,6 +29,7 @@ public class CameraRigController : MonoBehaviour
 
         InputController.Instance.OnCameraPan += OnCameraPan;
         InputController.Instance.OnCameraOrbit += OnCameraOrbit;
+        InputController.Instance.OnCameraDolly += OnCameraDolly;
     }
 
     /// <summary>
@@ -34,6 +43,9 @@ public class CameraRigController : MonoBehaviour
         dir += new Vector3(transform.forward.x, 0f, transform.forward.z) * input.y;
         dir.Normalize();
         transform.Translate (dir * PanSpeed * deltaTime, Space.World);
+
+        // TODO: Manage camera collisions
+
     }
 
     /// <summary>
@@ -75,5 +87,21 @@ public class CameraRigController : MonoBehaviour
         _camera.transform.LookAt(transform, Vector3.up);
 
         _prevOrbitInput = input;
+    }
+
+    private void OnCameraDolly(float input)
+    {
+        // TODO: This is probably frame rate dependent when it shouldn't
+        // TODO: This should not be linear
+        _camera.transform.Translate(0f, 0f, input * DollySensitivity, Space.Self);
+
+        // Clamp local z-position
+        Vector3 pos = _camera.transform.localPosition;
+        Vector3 clamped = new Vector3 (pos.x, pos.y, Mathf.Clamp(pos.z, -DollyLimits.y, -DollyLimits.x));
+        //Debug.Log($"OnCameraDolly: pos={pos} clamped={clamped}");
+        _camera.transform.localPosition = clamped;
+
+
+        // TODO: Manage camera collisions
     }
 }

@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "CameraDollyTrigger",
+                    "type": "Value",
+                    "id": "8e5fd956-ba21-4a94-9eb6-f7e52783a187",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -185,6 +194,17 @@
                     "action": "CameraOrbitTrigger",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e87ab411-2166-49e4-9254-a63e24ed3a20",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraDollyTrigger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -233,6 +253,15 @@
                     "type": "Value",
                     "id": "d7e958c5-95fa-4626-8520-885124088aa1",
                     "expectedControlType": "Digital",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "CameraDollyTrigger",
+                    "type": "Value",
+                    "id": "fbdddf29-6cd3-4cde-a81f-882376f8a6a5",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -390,6 +419,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CameraOrbitTrigger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "28a6a368-151d-4d32-9676-87e2c432f849",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraDollyTrigger",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
