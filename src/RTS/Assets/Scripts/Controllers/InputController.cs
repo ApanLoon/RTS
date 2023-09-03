@@ -1,6 +1,4 @@
 using System;
-using TMPro.EditorUtilities;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -11,6 +9,12 @@ public class InputController : MonoBehaviour
 
     public GameObject CursorPrefab;
     public Camera CurrentCamera;
+    public UnitDefinition UnitToPlace { get; protected set; }
+
+    #region events
+    public event Action<Vector2, float> OnCameraPan;
+    public event Action<bool, Vector2, float> OnCameraOrbit;
+    #endregion events
 
     /// <summary>
     /// True if the raycast into the scene hit something this frame.
@@ -37,6 +41,9 @@ public class InputController : MonoBehaviour
     private PlayerInput _playerInput;
     private Cursor _cursor;
     private Vector2 _mousePos;
+    private Vector2 _cameraMove;
+    private bool _onCameraOrbitTrigger;
+    private bool _prevOnCameraOrbitTrigger;
 
     private class ActionTrigger
     {
@@ -46,7 +53,6 @@ public class InputController : MonoBehaviour
     private enum ActionTriggerId { OnSelect, OnPlace, OnCancel };
     private ActionTrigger[] _actionTriggers;
 
-    public UnitDefinition UnitToPlace {  get; protected set; }
 
 
     private string[] _actionMapNames =     // Must match InputState
@@ -54,7 +60,6 @@ public class InputController : MonoBehaviour
         "Select",
         "Place"
     };
-    private bool _onCancel;
 
     private void OnEnable()
     {
@@ -103,6 +108,8 @@ public class InputController : MonoBehaviour
 
     private void Update()
     {
+        float deltaTime = Time.deltaTime; // TODO: Add pause/speed control here
+
         foreach (var actionTrigger in _actionTriggers)
         {
             if (actionTrigger.IsTriggered)
@@ -118,22 +125,24 @@ public class InputController : MonoBehaviour
         switch (State)
         {
             case InputState.Select:
-                Update_Select();
+                Update_Select(deltaTime);
+                Update_Camera(deltaTime);
                 break;
             case InputState.Place:
-                Update_Place();
+                Update_Place(deltaTime);
+                Update_Camera(deltaTime);
                 break;
             default:
                 break;
         }
     }
 
-    private void Update_Select()
+    private void Update_Select(float deltaTime)
     {
 
     }
 
-    private void Update_Place()
+    private void Update_Place(float deltaTime)
     {
         if (UnitToPlace == null)
         {
@@ -159,10 +168,34 @@ public class InputController : MonoBehaviour
         }
     }
 
+    private void Update_Camera(float deltaTime)
+    {
+        if (_cameraMove.sqrMagnitude > 0f)
+        {
+            OnCameraPan?.Invoke(_cameraMove, deltaTime);
+        }
+
+        if (_onCameraOrbitTrigger == true || _prevOnCameraOrbitTrigger == true)
+        {
+            OnCameraOrbit?.Invoke(_onCameraOrbitTrigger, _mousePos, deltaTime);
+            _prevOnCameraOrbitTrigger = _onCameraOrbitTrigger;
+        }
+    }
+
     #region InputActions
     private void OnMousePos(InputValue inputValue)
     {
         _mousePos = inputValue.Get<Vector2>();
+    }
+
+    private void OnCameraMove(InputValue inputValue)
+    {
+        _cameraMove = inputValue.Get<Vector2>();
+    }
+
+    private void OnCameraOrbitTrigger(InputValue inputValue)
+    {
+        _onCameraOrbitTrigger = inputValue.Get<float>() == 1f;
     }
 
     private void OnSelect()
