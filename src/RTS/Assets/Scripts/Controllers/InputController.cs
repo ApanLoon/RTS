@@ -16,7 +16,9 @@ public class InputController : MonoBehaviour
     public event Action<float> OnCameraDolly;
 
     public event Action<bool> OnMouseRayHitChanged;
-    public event Action OnSelect;
+
+    public event Action OnSelectStart;
+    public event Action OnSelectEnd;
     public event Action OnPlace;
     public event Action OnCancel;
     #endregion events
@@ -36,36 +38,29 @@ public class InputController : MonoBehaviour
     /// </summary>
     public GameObject MouseRayHitObject { get; protected set; }
 
+
+    private PlayerInput _playerInput;
     public enum ActionMapId
     {
         Select,
         Place
     }
+    private string[] _actionMapNames =     // Must match InputState
+    {
+        "Select",
+        "Place"
+    };
     public ActionMapId CurrentActionMapId { get; protected set; }
 
-    private PlayerInput _playerInput;
+
+    private Dictionary<string, Action<InputAction>> Actions;
 
     private Vector2 _mousePos;
     private Vector2 _cameraMove;
     private bool _onCameraOrbit;
     private bool _prevOnCameraOrbit;
     private float _cameraDolly;
-
-    private class ActionTrigger
-    {
-        public bool IsTriggered;
-        public Action Action;
-    }
-    private enum ActionTriggerId { OnSelect, OnPlace, OnCancel };
-    private ActionTrigger[] _actionTriggers;
-
-    private string[] _actionMapNames =     // Must match InputState
-    {
-        "Select",
-        "Place"
-    };
-
-    private Dictionary<string, Action<InputAction>> Actions;
+    private bool _onSelect;
         
     public void SetActionMap(ActionMapId state)
     {
@@ -82,16 +77,6 @@ public class InputController : MonoBehaviour
             return;
         }
         Instance = this;
-
-        if (_actionTriggers == null)
-        {
-            _actionTriggers = new ActionTrigger[]
-            {
-                new ActionTrigger() { IsTriggered = false, Action = () => {OnSelect?.Invoke(); } },
-                new ActionTrigger() { IsTriggered = false, Action = () => {OnPlace?.Invoke();  } },
-                new ActionTrigger() { IsTriggered = false, Action = () => {OnCancel?.Invoke(); } },
-             };
-        }
 
         if (Actions == null)
         {
@@ -135,7 +120,6 @@ public class InputController : MonoBehaviour
         Update_MouseRaycast();
 
         Update_RunActions();
-        Update_ActionTriggers();
 
         Update_Camera(deltaTime);
     }
@@ -143,26 +127,15 @@ public class InputController : MonoBehaviour
     private void Update_RunActions()
     {
         var map = _playerInput.currentActionMap;
-        foreach (var action in map)
+        foreach (var action in map) // NOTE: It is important that the actions in the map are ordered such that actions that set stuff up for other actions are first in the list. For example "MousePosAction" must be before "SelectAction" for the MouseRayHit* to be set up.
         {
-            if (action.IsPressed() || action.WasReleasedThisFrame())
+            if ((action.IsPressed() || action.WasReleasedThisFrame()) && EventSystem.current.IsPointerOverGameObject() == false) // TODO: This is an ugly way to do it, what if the action is not triggered by a click or anything else that should be eaten by the UI? For example OnCancel whitch triggers on the escape key.
             {
                 Actions[action.name](action);
             }
-        }
-    }
-
-    private void Update_ActionTriggers()
-    {
-        foreach (var actionTrigger in _actionTriggers)
-        {
-            if (actionTrigger.IsTriggered)
+            if (action.WasReleasedThisFrame())
             {
-                actionTrigger.IsTriggered = false;
-                if (EventSystem.current.IsPointerOverGameObject() == false) // TODO: This is an ugly way to do it, what if the action is not triggered by a click or anything else that should be eaten by the UI? For example OnCancel whitch triggers on the escape key.
-                {
-                    actionTrigger.Action();
-                }
+                Actions[action.name](action);
             }
         }
     }
@@ -221,17 +194,28 @@ public class InputController : MonoBehaviour
 
     private void OnSelectAction(InputAction context)
     {
-        _actionTriggers[(int)ActionTriggerId.OnSelect].IsTriggered = true;
+        bool isSelecting = context.IsPressed();
+
+        if (_onSelect == false && isSelecting == true)
+        {
+            OnSelectStart?.Invoke();
+        }
+        else if (_onSelect == true && isSelecting == false)
+        {
+            OnSelectEnd?.Invoke();
+        }
+
+        _onSelect = isSelecting;
     }
 
     private void OnPlaceAction(InputAction context)
     {
-        _actionTriggers[(int)ActionTriggerId.OnPlace].IsTriggered = true;
+        OnPlace?.Invoke();
     }
 
     private void OnCancelAction(InputAction context)
     {
-        _actionTriggers[(int)ActionTriggerId.OnCancel].IsTriggered = true;
+        OnCancel?.Invoke();
     }
     #endregion InputActions
 }

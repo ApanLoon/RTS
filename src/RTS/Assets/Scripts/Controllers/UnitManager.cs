@@ -17,10 +17,14 @@ public class UnitManager : MonoBehaviour
                 _placeUnitIndicator = gameObject.GetComponent<PlaceUnitIndicator>();
             }
 
+            InputController.Instance.OnSelectStart += OnSelectStart;
+            InputController.Instance.OnSelectEnd += OnSelectEnd;
+
             InputController.Instance.OnPlace  += OnPlace;
             InputController.Instance.OnCancel += OnCancel;
         }
     }
+
     private void Update()
     {
         if (IsPlayerFaction)
@@ -31,6 +35,16 @@ public class UnitManager : MonoBehaviour
     #endregion MonoBehaviour
 
     #region SelectUnit
+    private bool prevIsSelecting;
+    private void OnSelectStart()
+    {
+        Debug.Log("OnSelectStart");
+    }
+    private void OnSelectEnd()
+    {
+        Debug.Log("OnSelectEnd");
+    }
+
     #endregion SelectUnit
 
     #region PlaceUnit
