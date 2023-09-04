@@ -15,8 +15,6 @@ public class InputController : MonoBehaviour
     public event Action<bool, Vector2, float> OnCameraOrbit;
     public event Action<float> OnCameraDolly;
 
-    public event Action<bool> OnMouseRayHitChanged;
-
     public event Action OnSelectStart;
     public event Action OnSelectEnd;
     public event Action OnPlace;
@@ -127,7 +125,7 @@ public class InputController : MonoBehaviour
     private void Update_RunActions()
     {
         var map = _playerInput.currentActionMap;
-        foreach (var action in map) // NOTE: It is important that the actions in the map are ordered such that actions that set stuff up for other actions are first in the list. For example "MousePosAction" must be before "SelectAction" for the MouseRayHit* to be set up.
+        foreach (var action in map)
         {
             if ((action.IsPressed() || action.WasReleasedThisFrame()) && EventSystem.current.IsPointerOverGameObject() == false) // TODO: This is an ugly way to do it, what if the action is not triggered by a click or anything else that should be eaten by the UI? For example OnCancel whitch triggers on the escape key.
             {
@@ -151,11 +149,7 @@ public class InputController : MonoBehaviour
             hasMouseRayHit = true;
         }
 
-        if (hasMouseRayHit != HasMouseRayHit)
-        {
-            HasMouseRayHit = hasMouseRayHit;
-            OnMouseRayHitChanged?.Invoke(hasMouseRayHit);
-        }
+        HasMouseRayHit = hasMouseRayHit;
     }
 
     private void Update_Camera(float deltaTime)
