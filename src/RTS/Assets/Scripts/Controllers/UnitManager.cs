@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 
 public class UnitManager : MonoBehaviour
 {
-    public GameObject CursorPrefab;
+    public GameObject GroundProjectorPrefab;
+    public Material SelectProjectorMaterial;
 
     public bool IsPlayerFaction;
 
@@ -16,10 +18,9 @@ public class UnitManager : MonoBehaviour
 
         if (IsPlayerFaction)
         {
-            if (_placeUnitIndicator == null)
+            if (_groundProjector == null)
             {
-                GameObject gameObject = Instantiate(CursorPrefab, Vector3.zero, Quaternion.identity, transform);
-                _placeUnitIndicator = gameObject.GetComponent<DecalProjectorController>();
+                _groundProjector = Instantiate(GroundProjectorPrefab, Vector3.zero, Quaternion.Euler(-90f, 0f, 0f), transform);
             }
 
             InputController.Instance.OnSelectStart += OnSelectStart;
@@ -34,7 +35,8 @@ public class UnitManager : MonoBehaviour
     {
         if (IsPlayerFaction)
         {
-            Update_HandlePlacementProjector();
+            Update_Select();
+            Update_Place();
         }
     }
     #endregion MonoBehaviour
@@ -52,7 +54,6 @@ public class UnitManager : MonoBehaviour
         _isSelecting = true;
         _selectStartPos = _inputController.MouseRayHitPosition;
         _selectedUnits.Clear();
-        Debug.Log($"UnitManager.OnSelectStart: pos={_selectStartPos}");
     }
     private void OnSelectEnd()
     {
@@ -62,6 +63,7 @@ public class UnitManager : MonoBehaviour
         }
 
         _isSelecting = false;
+        _groundProjector.gameObject.SetActive (false);
 
         if (_inputController.HasMouseRayHit == false)
         {
@@ -83,21 +85,42 @@ public class UnitManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log($"UnitManager.OnSelectEnd: pos={pos} selectedUnits={_selectedUnits.Count}");
+        else
+        {
+            var bounds = GeometryUtility.CalculateBounds(new Vector3[] { _selectStartPos, pos }, Matrix4x4.identity);
+            foreach (var collider in Physics.OverlapBox(bounds.center, new Vector3(bounds.size.x * 0.5f, 1000, bounds.size.z * 0.5f) ))
+            {
+                var unitController = collider.GetComponentInParent<UnitController>();
+                if (unitController != null && _selectedUnits.Contains(unitController) == false)
+                {
+                    _selectedUnits.Add(unitController);
+                }
+            }
+        }
+        Debug.Log($"UnitManager.OnSelectEnd: selectedUnits={_selectedUnits.Count}");
+    }
 
+    private void Update_Select()
+    {
+        if (_isSelecting == false)
+        {
+            return;
+        }
+
+        var bounds = GeometryUtility.CalculateBounds(new Vector3[] {_selectStartPos, _inputController.MouseRayHitPosition }, Matrix4x4.identity);
+        SetGroundProjector(bounds.center, SelectProjectorMaterial, bounds.size.x, bounds.size.z);
     }
     #endregion SelectUnit
 
     #region PlaceUnit
     public UnitDefinition UnitToPlace { get; protected set; }
-
-    private DecalProjectorController _placeUnitIndicator;
-
+    private bool _isPlacing;
     public void SetPlaceUnit(UnitDefinition unitDefinition)
     {
         Debug.Log("UnitManager.SetPlaceUnit: " + unitDefinition.Name);
         UnitToPlace = unitDefinition;
         InputController.Instance.SetActionMap(InputController.ActionMapId.Place);
+        _isPlacing = true;
     }
     
     private void OnPlace()
@@ -113,6 +136,8 @@ public class UnitManager : MonoBehaviour
 
         // TODO: Store a reference to the unit
 
+        _isPlacing = false;
+        _groundProjector.gameObject.SetActive(false);
         UnitToPlace = null;
         InputController.Instance.SetActionMap(InputController.ActionMapId.Select);
     }
@@ -124,21 +149,34 @@ public class UnitManager : MonoBehaviour
             return;
         }
 
+        _isPlacing = false;
+        _groundProjector.gameObject.SetActive(false);
         UnitToPlace = null;
         InputController.Instance.SetActionMap(InputController.ActionMapId.Select);
     }
 
-    private void Update_HandlePlacementProjector()
+    private void Update_Place()
     {
-        if ( UnitToPlace == null || InputController.Instance.HasMouseRayHit == false)
+        if (_isPlacing == false)
         {
-            _placeUnitIndicator.gameObject.SetActive(false);
             return;
         }
 
-        _placeUnitIndicator.transform.position = InputController.Instance.MouseRayHitPosition;
-        _placeUnitIndicator.SetProjector(FactionController.Instance.CurrentFaction.DecalMaterial, UnitToPlace.Size.x, UnitToPlace.Size.y);
-        _placeUnitIndicator.gameObject.SetActive(true);
+        SetGroundProjector(InputController.Instance.MouseRayHitPosition, FactionController.Instance.CurrentFaction.DecalMaterial, UnitToPlace.Size.x, UnitToPlace.Size.y);
     }
     #endregion PlaceUnit
+
+    #region GroundProjector
+    private GameObject _groundProjector;
+
+    private void SetGroundProjector(Vector3 pos, Material material, float width, float height)
+    {
+        _groundProjector.transform.position = pos;
+        var _projector = _groundProjector.GetComponent<DecalProjector>();
+        _projector.material = material;
+        _projector.size = new Vector3(width, height, 50f);
+
+        _groundProjector.gameObject.SetActive(true);
+    }
+    #endregion GroundProjector
 }
