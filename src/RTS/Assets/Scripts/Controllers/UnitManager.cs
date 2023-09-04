@@ -48,6 +48,41 @@ public class UnitManager : MonoBehaviour
     private bool _isSelecting;
     private Vector3 _selectStartPos;
     private List<UnitController> _selectedUnits = new List<UnitController>();
+
+    public void SelectUnits(UnitController unitController)
+    {
+        _selectedUnits.Clear();
+        _selectedUnits.Add(unitController);
+        OnSelectionChanged?.Invoke(_selectedUnits);
+    }
+
+    public void SelectUnits(IEnumerable<UnitController> unitControllers)
+    {
+        _selectedUnits.Clear();
+        _selectedUnits.AddRange(unitControllers);
+        OnSelectionChanged?.Invoke(_selectedUnits);
+    }
+
+    public void DeselectUnits(UnitController unitController)
+    {
+        if (_selectedUnits.Contains(unitController))
+        {
+            _selectedUnits.Remove(unitController);
+            OnSelectionChanged?.Invoke(_selectedUnits);
+        }
+    }
+    public void DeselectUnits(IEnumerable<UnitController> unitControllers)
+    {
+        foreach (var unitController in unitControllers)
+        {
+            if (_selectedUnits.Contains(unitController))
+            {
+                _selectedUnits.Remove(unitController);
+                OnSelectionChanged?.Invoke(_selectedUnits);
+            }
+        }
+    }
+
     private void OnSelectStart()
     {
         if (_inputController.HasMouseRayHit == false)
@@ -101,7 +136,6 @@ public class UnitManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log($"UnitManager.OnSelectEnd: selectedUnits={_selectedUnits.Count}");
         OnSelectionChanged?.Invoke(_selectedUnits);
     }
 

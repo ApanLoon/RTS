@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class SelectedUnitsPanel : MonoBehaviour
@@ -25,12 +24,12 @@ public class SelectedUnitsPanel : MonoBehaviour
             var unitUI = Instantiate(SelectedUnitPrefab);
             unitUI.transform.SetParent(transform);
 
-        //    var button = unitButton.GetComponentInChildren<Button>();
-        //    var ud = unitDefinition;
-        //    button.onClick.AddListener(() => FactionController.Instance.GetPlayerUnitManager().SetPlaceUnit(ud));
-
-            var title = unitUI.GetComponentInChildren<TMP_Text>();
-            title.text = unit.gameObject.name;
+            var u = unit;
+            unitUI.GetComponent<SelectedUnit>().SetProperties (
+                unit.gameObject.name,
+                () => _unitManager.SelectUnits  (u),
+                () => _unitManager.DeselectUnits(u)
+            );
         }
     }
 }
