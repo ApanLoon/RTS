@@ -22,4 +22,9 @@ public class UnitDefinition : ScriptableObject
     /// If this unit is a stationary building, we might have to re-build the nav mesh when it is placed or removed
     /// </summary>
     public bool AffectsNavMesh = false;
+
+    /// <summary>
+    /// If this is false, any movement commands sent to units of this type will be ignored
+    /// </summary>
+    public bool CanMove = false;
 }

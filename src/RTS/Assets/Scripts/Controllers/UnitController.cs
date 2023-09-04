@@ -11,11 +11,19 @@ public class UnitController : MonoBehaviour
 
     public void Command_MoveTo (Vector3 target)
     {
+        if (UnitDefinition.CanMove == false)
+        {
+            return;
+        }
         _agent.SetDestination(target);
     }
 
     public void Command_Stop()
     {
+        if (UnitDefinition.CanMove == false)
+        {
+            return;
+        }
         _agent.isStopped = true;
     }
 

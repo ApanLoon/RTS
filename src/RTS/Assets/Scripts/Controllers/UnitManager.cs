@@ -256,12 +256,54 @@ public class UnitManager : MonoBehaviour
         }
 
         // Assume the command was on the ground, issue move orders.
+
+        Vector3?[] targetPositions = ComputeTargetPositions(_inputController.MouseRayHitPosition, _selectedUnits);
+
         Debug.Log("UnitManager.OnCommand: Move to " + _inputController.MouseRayHitPosition);
+        int index = 0;
         foreach (var unit in _selectedUnits)
         {
-            var pos = _inputController.MouseRayHitPosition; // TODO: Call a function that determines the position for this unit in the pattern for all selected units.
-            unit.Command_MoveTo(pos);
+            var pos = targetPositions[index++];
+            if (pos != null)
+            {
+                unit.Command_MoveTo((Vector3)pos);
+            }
         }
+    }
+
+    /// <summary>
+    /// Compute target positions for the selected units
+    /// 
+    /// TODO: Add sophistication to this algorithm to take different unit sizes and classes into account, perhaps also allow for different formations.
+    /// 
+    /// </summary>
+    /// <param name="center"></param>
+    /// <param name="units"></param>
+    /// <returns></returns>
+    private Vector3?[] ComputeTargetPositions(Vector3 center, List<UnitController> units)
+    {
+        List<Vector3?> l = new List<Vector3?>();
+        int nCols = Mathf.FloorToInt(Mathf.Sqrt(units.Count));
+        for (int i = 0; i < units.Count; i++)
+        {
+            var unit = units[i];
+
+            if(unit.UnitDefinition.CanMove == false)
+            {
+                l.Add(null);
+                continue;
+            }
+
+            int row = i / nCols;
+            int col = i % nCols;
+            Vector3 s = unit.UnitDefinition.Size;
+
+            // TODO: This isn't even correct. It was supposed to  place all units around the centre point but it does not.
+            var offset = new Vector3((col - (nCols / 2f)) * s.x, 0f, (row - (nCols / 2f))) * s.z;
+            Debug.Log($"Offset: {i} - nCols={nCols} col={col} row={row} offset={offset}");
+            l.Add(center - offset);
+        }
+        return l.ToArray();
     }
     #endregion Command
 
