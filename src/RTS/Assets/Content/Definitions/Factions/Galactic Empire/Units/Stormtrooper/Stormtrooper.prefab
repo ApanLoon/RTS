@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3265382855620826890}
+  - component: {fileID: 8769757434928121184}
   m_Layer: 0
   m_Name: Stormtrooper
   m_TagString: Untagged
@@ -32,6 +33,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8769757434928121184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5794924524670022793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5dcc20790f87ba4891ddab43d40700d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FactionDefinition: {fileID: 11400000, guid: 7ce7e48848aac124bb370e876b3d3ed9, type: 2}
+  UnitDefinition: {fileID: 11400000, guid: 3f9044d7431fde34089eae16db557cd2, type: 2}
+  UnitManager: {fileID: 0}
 --- !u!1 &6013742017518939374
 GameObject:
   m_ObjectHideFlags: 0

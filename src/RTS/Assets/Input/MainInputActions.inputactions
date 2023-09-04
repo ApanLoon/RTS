@@ -6,7 +6,7 @@
             "id": "260f8939-b74a-464b-8dbf-16c04abbf4f0",
             "actions": [
                 {
-                    "name": "MousePos",
+                    "name": "MousePosAction",
                     "type": "Value",
                     "id": "52f4dcfc-98eb-449d-bdb2-b6c792b652a6",
                     "expectedControlType": "Vector2",
@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Select",
+                    "name": "SelectAction",
                     "type": "Button",
                     "id": "f6e6eed4-3d0d-4184-a79a-3ea58e1656b5",
                     "expectedControlType": "Button",
@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "CameraMove",
+                    "name": "CameraMoveAction",
                     "type": "Value",
                     "id": "e4ba1a9f-df37-4c16-9f0c-cdb5bbe59181",
                     "expectedControlType": "Vector2",
@@ -33,7 +33,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "CameraOrbitTrigger",
+                    "name": "CameraOrbitAction",
                     "type": "Value",
                     "id": "acfe9d35-a409-47ea-8852-595ba83dc52c",
                     "expectedControlType": "Digital",
@@ -42,7 +42,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "CameraDollyTrigger",
+                    "name": "CameraDollyAction",
                     "type": "Value",
                     "id": "8e5fd956-ba21-4a94-9eb6-f7e52783a187",
                     "expectedControlType": "Axis",
@@ -59,7 +59,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Default",
-                    "action": "MousePos",
+                    "action": "MousePosAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -70,7 +70,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
+                    "action": "SelectAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -81,7 +81,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -92,7 +92,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -103,7 +103,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -114,7 +114,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -125,7 +125,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -136,7 +136,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -147,7 +147,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -158,7 +158,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -169,7 +169,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -180,7 +180,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -191,7 +191,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraOrbitTrigger",
+                    "action": "CameraOrbitAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -202,7 +202,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraDollyTrigger",
+                    "action": "CameraDollyAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -213,7 +213,7 @@
             "id": "ce5c207c-914b-4781-9d54-b8400bf5a99d",
             "actions": [
                 {
-                    "name": "MousePos",
+                    "name": "MousePosAction",
                     "type": "Value",
                     "id": "415d8157-b5c7-417f-a4b5-d94a50658db1",
                     "expectedControlType": "Vector2",
@@ -222,7 +222,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Place",
+                    "name": "PlaceAction",
                     "type": "Button",
                     "id": "2146c646-79e3-4438-ba2b-f5de2856d4d0",
                     "expectedControlType": "Button",
@@ -231,7 +231,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Cancel",
+                    "name": "CancelAction",
                     "type": "Button",
                     "id": "75f4b0b8-638d-4643-90c0-f11a0085a648",
                     "expectedControlType": "Button",
@@ -240,7 +240,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "CameraMove",
+                    "name": "CameraMoveAction",
                     "type": "Value",
                     "id": "243503e4-0f8a-4cc9-be63-c63b9867a681",
                     "expectedControlType": "Vector2",
@@ -249,7 +249,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "CameraOrbitTrigger",
+                    "name": "CameraOrbitAction",
                     "type": "Value",
                     "id": "d7e958c5-95fa-4626-8520-885124088aa1",
                     "expectedControlType": "Digital",
@@ -258,7 +258,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "CameraDollyTrigger",
+                    "name": "CameraDollyAction",
                     "type": "Value",
                     "id": "fbdddf29-6cd3-4cde-a81f-882376f8a6a5",
                     "expectedControlType": "Axis",
@@ -275,7 +275,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Default",
-                    "action": "MousePos",
+                    "action": "MousePosAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -286,7 +286,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Place",
+                    "action": "PlaceAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -297,7 +297,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cancel",
+                    "action": "CancelAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -308,7 +308,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -319,7 +319,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -330,7 +330,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -341,7 +341,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -352,7 +352,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -363,7 +363,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -374,7 +374,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -385,7 +385,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -396,7 +396,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -407,7 +407,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraMove",
+                    "action": "CameraMoveAction",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -418,7 +418,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraOrbitTrigger",
+                    "action": "CameraOrbitAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -429,7 +429,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "CameraDollyTrigger",
+                    "action": "CameraDollyAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

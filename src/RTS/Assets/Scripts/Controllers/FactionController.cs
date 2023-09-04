@@ -17,4 +17,11 @@ public class FactionController : MonoBehaviour
         }
         Instance = this;
     }
+
+    public UnitManager GetPlayerUnitManager()
+    {
+        // TODO: Find the correct manager
+
+        return transform.GetChild(0).GetComponent<UnitManager>();
+    }
 }

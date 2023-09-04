@@ -20,27 +20,21 @@ public class InputInfoPanel : MonoBehaviour
     private void Update()
     {
         string s = "";
-        s += "State:    " + _inputController.State;
+        s += "ActionMap:     " + _inputController.CurrentActionMapId;
 
-        switch (_inputController.State)
+        if (_inputController.MouseRayHitPosition != null)
         {
-            case InputController.InputState.Select:
-                break;
-            case InputController.InputState.Place:
-                if (_inputController.MouseHitPosition != null)
-                {
-                    s += "\nPos:    " + _inputController.MouseHitPosition;
-                }
+            s += "\nMouseRayHit:   " + _inputController.MouseRayHitPosition;
+        }
 
-                s += "\nUnit:   " + _inputController.UnitToPlace.Name;
+        if (_inputController.MouseRayHitObject != null)
+        {
+            s += "\nMouseRayHitObj: " + _inputController.MouseRayHitObject.name;
+        }
 
-                if (_inputController.MouseHitObject != null)
-                {
-                    s += "\nObject: " + _inputController.MouseHitObject.name;
-                }
-                break;
-            default:
-                break;
+        if (FactionController.Instance.GetPlayerUnitManager().UnitToPlace != null)
+        {
+            s += "\nUnitToPlace:   " + FactionController.Instance.GetPlayerUnitManager().UnitToPlace.Name;
         }
 
         ContentText.text = s;
