@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
@@ -8,6 +9,8 @@ public class UnitManager : MonoBehaviour
     public Material SelectProjectorMaterial;
 
     public bool IsPlayerFaction;
+
+    public event Action<List<UnitController>> OnSelectionChanged;
 
     private InputController _inputController;
 
@@ -68,6 +71,7 @@ public class UnitManager : MonoBehaviour
         if (_inputController.HasMouseRayHit == false)
         {
             Debug.Log("UnitManager.OnSelectEnd: Selection ended with no MouseRayHit. Don't know what to do so cancel the selection.");
+            OnSelectionChanged?.Invoke(_selectedUnits);
             return;
         }
 
@@ -98,6 +102,7 @@ public class UnitManager : MonoBehaviour
             }
         }
         Debug.Log($"UnitManager.OnSelectEnd: selectedUnits={_selectedUnits.Count}");
+        OnSelectionChanged?.Invoke(_selectedUnits);
     }
 
     private void Update_Select()
