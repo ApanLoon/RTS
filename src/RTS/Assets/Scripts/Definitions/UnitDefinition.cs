@@ -17,4 +17,9 @@ public class UnitDefinition : ScriptableObject
     /// The in-world prefab
     /// </summary>
     public GameObject UnitPrefab;
+
+    /// <summary>
+    /// If this unit is a stationary building, we might have to re-build the nav mesh when it is placed or removed
+    /// </summary>
+    public bool AffectsNavMesh = false;
 }

@@ -31,6 +31,8 @@ public class UnitManager : MonoBehaviour
 
             InputController.Instance.OnPlace  += OnPlace;
             InputController.Instance.OnCancel += OnCancel;
+
+            InputController.Instance.OnCommand += OnCommand; 
         }
     }
 
@@ -44,6 +46,21 @@ public class UnitManager : MonoBehaviour
     }
     #endregion MonoBehaviour
 
+    /// <summary>
+    /// Returns to either Select or Command depending on unit selection.
+    /// </summary>
+    private void ReturnToIdle()
+    {
+        if (_selectedUnits.Count > 0)
+        {
+            _inputController.SetActionMap(InputController.ActionMapId.Command);
+        }
+        else
+        {
+            _inputController.SetActionMap(InputController.ActionMapId.Select);
+        }
+    }
+
     #region SelectUnit
     private bool _isSelecting;
     private Vector3 _selectStartPos;
@@ -53,14 +70,14 @@ public class UnitManager : MonoBehaviour
     {
         _selectedUnits.Clear();
         _selectedUnits.Add(unitController);
-        OnSelectionChanged?.Invoke(_selectedUnits);
+        SelectionChanged();
     }
 
     public void SelectUnits(IEnumerable<UnitController> unitControllers)
     {
         _selectedUnits.Clear();
         _selectedUnits.AddRange(unitControllers);
-        OnSelectionChanged?.Invoke(_selectedUnits);
+        SelectionChanged();
     }
 
     public void DeselectUnits(UnitController unitController)
@@ -68,19 +85,30 @@ public class UnitManager : MonoBehaviour
         if (_selectedUnits.Contains(unitController))
         {
             _selectedUnits.Remove(unitController);
-            OnSelectionChanged?.Invoke(_selectedUnits);
+            SelectionChanged();
         }
     }
     public void DeselectUnits(IEnumerable<UnitController> unitControllers)
     {
+        bool changed = false;
         foreach (var unitController in unitControllers)
         {
             if (_selectedUnits.Contains(unitController))
             {
                 _selectedUnits.Remove(unitController);
-                OnSelectionChanged?.Invoke(_selectedUnits);
+                changed = true;
             }
         }
+        if (changed)
+        {
+            SelectionChanged();
+        }
+    }
+
+    private void SelectionChanged()
+    {
+        OnSelectionChanged?.Invoke(_selectedUnits);
+        ReturnToIdle();
     }
 
     private void OnSelectStart()
@@ -106,7 +134,7 @@ public class UnitManager : MonoBehaviour
         if (_inputController.HasMouseRayHit == false)
         {
             Debug.Log("UnitManager.OnSelectEnd: Selection ended with no MouseRayHit. Don't know what to do so cancel the selection.");
-            OnSelectionChanged?.Invoke(_selectedUnits);
+            SelectionChanged();
             return;
         }
 
@@ -136,7 +164,7 @@ public class UnitManager : MonoBehaviour
                 }
             }
         }
-        OnSelectionChanged?.Invoke(_selectedUnits);
+        SelectionChanged();
     }
 
     private void Update_Select()
@@ -168,17 +196,22 @@ public class UnitManager : MonoBehaviour
         {
             return;
         }
-
-        var go = Instantiate (UnitToPlace.UnitPrefab, InputController.Instance.MouseRayHitPosition, Quaternion.identity);
+        Vector3 pos = InputController.Instance.MouseRayHitPosition;
+        var go = Instantiate (UnitToPlace.UnitPrefab, pos, Quaternion.identity);
         var unit = go.GetComponent<UnitController>();
         unit.UnitManager = this;
+
+        if (unit.UnitDefinition.AffectsNavMesh)
+        {
+            TerrainManager.Instance.RebuildNavMesh(pos, unit.UnitDefinition.Size.magnitude);
+        }
 
         // TODO: Store a reference to the unit
 
         _isPlacing = false;
         _groundProjector.gameObject.SetActive(false);
         UnitToPlace = null;
-        InputController.Instance.SetActionMap(InputController.ActionMapId.Select);
+        ReturnToIdle();
     }
 
     private void OnCancel()
@@ -191,7 +224,7 @@ public class UnitManager : MonoBehaviour
         _isPlacing = false;
         _groundProjector.gameObject.SetActive(false);
         UnitToPlace = null;
-        InputController.Instance.SetActionMap(InputController.ActionMapId.Select);
+        ReturnToIdle();
     }
 
     private void Update_Place()
@@ -204,6 +237,33 @@ public class UnitManager : MonoBehaviour
         SetGroundProjector(InputController.Instance.MouseRayHitPosition, FactionController.Instance.CurrentFaction.DecalMaterial, UnitToPlace.Size.x, UnitToPlace.Size.y);
     }
     #endregion PlaceUnit
+
+    #region Command
+    private void OnCommand()
+    {
+        if (_inputController.HasMouseRayHit == false)
+        {
+            return;
+        }
+
+        var targetUnitController = _inputController.MouseRayHitObject.GetComponentInParent<UnitController>();
+        if (targetUnitController != null)
+        {
+            // TODO: Check if the selected units can enter the target
+            // TODO: Check if the target is enemy faction
+            Debug.Log("UnitManager.OnCommand: Attack " + targetUnitController.gameObject.name);
+            return;
+        }
+
+        // Assume the command was on the ground, issue move orders.
+        Debug.Log("UnitManager.OnCommand: Move to " + _inputController.MouseRayHitPosition);
+        foreach (var unit in _selectedUnits)
+        {
+            var pos = _inputController.MouseRayHitPosition; // TODO: Call a function that determines the position for this unit in the pattern for all selected units.
+            unit.Command_MoveTo(pos);
+        }
+    }
+    #endregion Command
 
     #region GroundProjector
     private GameObject _groundProjector;

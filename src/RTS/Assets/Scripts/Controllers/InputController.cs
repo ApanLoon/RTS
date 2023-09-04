@@ -17,8 +17,11 @@ public class InputController : MonoBehaviour
 
     public event Action OnSelectStart;
     public event Action OnSelectEnd;
+
     public event Action OnPlace;
     public event Action OnCancel;
+
+    public event Action OnCommand;
     #endregion events
 
     /// <summary>
@@ -41,12 +44,14 @@ public class InputController : MonoBehaviour
     public enum ActionMapId
     {
         Select,
-        Place
+        Place,
+        Command
     }
     private string[] _actionMapNames =     // Must match InputState
     {
         "Select",
-        "Place"
+        "Place",
+        "Command"
     };
     public ActionMapId CurrentActionMapId { get; protected set; }
 
@@ -89,6 +94,8 @@ public class InputController : MonoBehaviour
                 { "SelectAction", OnSelectAction },
                 { "PlaceAction",  OnPlaceAction  },
                 { "CancelAction", OnCancelAction },
+
+                { "CommandAction", OnCommandAction },
             };
         }
     }
@@ -210,6 +217,11 @@ public class InputController : MonoBehaviour
     private void OnCancelAction(InputAction context)
     {
         OnCancel?.Invoke();
+    }
+
+    private void OnCommandAction(InputAction context)
+    {
+        OnCommand?.Invoke();
     }
     #endregion InputActions
 }

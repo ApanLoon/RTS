@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2168.8264, g: 2281.0686, b: 3333.4185, a: 1}
+  m_IndirectSpecularColor: {r: 2186.2893, g: 2334.0823, b: 3510.977, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -239,6 +239,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stormtrooper (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794924524670022793, guid: 65aed96d566fe7d4ca8dcb29fc1a2577,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8769757434928121184, guid: 65aed96d566fe7d4ca8dcb29fc1a2577,
         type: 3}
@@ -485,6 +490,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Command Centre
+      objectReference: {fileID: 0}
+    - target: {fileID: 4411203511954778571, guid: 0f73978d1ac0a224caed76365629a6e6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4771720393414023854, guid: 0f73978d1ac0a224caed76365629a6e6,
         type: 3}
@@ -1646,6 +1656,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stormtrooper
       objectReference: {fileID: 0}
+    - target: {fileID: 5794924524670022793, guid: 65aed96d566fe7d4ca8dcb29fc1a2577,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8769757434928121184, guid: 65aed96d566fe7d4ca8dcb29fc1a2577,
         type: 3}
       propertyPath: UnitManager
@@ -1867,6 +1882,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1724288894}
   - component: {fileID: 1724288895}
+  - component: {fileID: 1724288896}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -1902,6 +1918,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3af91a37d00d9944cb66bccf00f504e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1724288896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724288893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 04d33159d33e59d42888f6ca3ba79cfd, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1 &1740620011
 GameObject:
   m_ObjectHideFlags: 0
