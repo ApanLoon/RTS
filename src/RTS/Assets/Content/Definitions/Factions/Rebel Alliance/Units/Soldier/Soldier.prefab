@@ -31,7 +31,7 @@ Transform:
   m_Children:
   - {fileID: 5596228057909325591}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1962822834937085061
 MonoBehaviour:
@@ -48,6 +48,8 @@ MonoBehaviour:
   FactionDefinition: {fileID: 11400000, guid: 29f5f4defd40d114aa9a95f35bf9133a, type: 2}
   UnitDefinition: {fileID: 11400000, guid: d6b5b6d9cb6538f41b2e08c321d8a606, type: 2}
   UnitManager: {fileID: 0}
+  MoveTargetIndicatorPrefab: {fileID: 1196972548272172876, guid: f45b1dece5eae854f98983d56e611779,
+    type: 3}
 --- !u!1 &6446550928189871738
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,7 +109,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
+  m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
@@ -213,7 +215,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
+  m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 57996cf5eb5fa5f488591982e1be6b71, type: 2}

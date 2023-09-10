@@ -8,11 +8,29 @@ public class UnitManager : MonoBehaviour
     public GameObject GroundProjectorPrefab;
     public Material SelectProjectorMaterial;
 
+    public FactionDefinition FactionDefinition;
     public bool IsPlayerFaction;
 
     public event Action<List<UnitController>> OnSelectionChanged;
 
     private InputController _inputController;
+
+    private void PlaceDummyUnits()
+    {
+        if (IsPlayerFaction == false)
+        {
+            return;
+        }
+        Debug.Log($"UnitDefinitions.Count={FactionDefinition.UnitDefinitions.Count}");
+        PlaceUnit(FactionDefinition.UnitDefinitions[0], new Vector3(-31f, 50f, -28f));
+
+        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-25f, 50f, -45f));
+        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-27f, 50f, -45f));
+        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-29f, 50f, -45f));
+        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-31f, 50f, -45f));
+        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-33f, 50f, -45f));
+        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-35f, 50f, -45f));
+    }
 
     #region MonoBehaviour
     private void Start()
@@ -27,7 +45,9 @@ public class UnitManager : MonoBehaviour
             InputController.Instance.OnPlace  += OnPlace;
             InputController.Instance.OnCancel += OnCancel;
 
-            InputController.Instance.OnCommand += OnCommand; 
+            InputController.Instance.OnCommand += OnCommand;
+
+            PlaceDummyUnits();
         }
     }
 
@@ -188,15 +208,13 @@ public class UnitManager : MonoBehaviour
         InputController.Instance.SetActionMap(InputController.ActionMapId.Place);
         _isPlacing = true;
     }
-    
-    private void OnPlace()
+
+    private void PlaceUnit(UnitDefinition unitDefinition, Vector3 pos)
     {
-        if (IsPlayerFaction == false)
-        {
-            return;
-        }
-        var pos = InputController.Instance.MouseRayHitPosition;
-        var go = Instantiate (UnitToPlace.UnitPrefab, pos, Quaternion.identity);
+        pos.y = TerrainManager.Instance.TerrainHeightAt(pos);
+        Debug.Log($"Placing {unitDefinition.Name} at {pos}.");
+
+        var go = Instantiate(unitDefinition.UnitPrefab, pos, Quaternion.identity, transform);
         var unit = go.GetComponent<UnitController>();
         unit.UnitManager = this;
 
@@ -206,8 +224,19 @@ public class UnitManager : MonoBehaviour
         }
 
         // TODO: Store a reference to the unit
+    }
 
-        _isPlacing = false;
+    private void OnPlace()
+    {
+        if (IsPlayerFaction == false)
+        {
+            return;
+        }
+        var pos = InputController.Instance.MouseRayHitPosition;
+        
+        PlaceUnit(UnitToPlace, pos);
+
+         _isPlacing = false;
         _groundProjector.gameObject.SetActive(false);
         UnitToPlace = null;
         ReturnToIdle();

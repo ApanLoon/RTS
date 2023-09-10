@@ -14,6 +14,8 @@ public class TerrainManager : MonoBehaviour
 
         _terrain = GetComponentInChildren<Terrain>();
         _navMeshSurface = GetComponentInChildren<NavMeshSurface>();
+
+        _navMeshSurface.BuildNavMesh();
     }
 
     /// <summary>
