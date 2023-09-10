@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
@@ -285,11 +286,12 @@ public class UnitManager : MonoBehaviour
 
         // Assume the command was on the ground, issue move orders.
 
-        Vector3?[] targetPositions = ComputeTargetPositions(_inputController.MouseRayHitPosition, _selectedUnits);
+        var units = _selectedUnits.Where(x => x.UnitDefinition.CanMove).ToList();
+        var targetPositions = ComputeTargetPositions(_inputController.MouseRayHitPosition, units);
 
-        Debug.Log("UnitManager.OnCommand: Move to " + _inputController.MouseRayHitPosition);
+        //Debug.Log("UnitManager.OnCommand: Move to " + _inputController.MouseRayHitPosition);
         int index = 0;
-        foreach (var unit in _selectedUnits)
+        foreach (var unit in units)
         {
             var pos = targetPositions[index++];
             if (pos != null)
@@ -326,9 +328,9 @@ public class UnitManager : MonoBehaviour
             var col = i % nCols;
             var s = unit.UnitDefinition.Size;
 
-            // TODO: This isn't even correct. It was supposed to  place all units around the centre point but it does not.
+            // TODO: This isn't quite correct. It was supposed to  place all units around the centre point but it does not.
             var offset = new Vector3((col - (nCols / 2f)) * s.x, 0f, (row - (nCols / 2f))) * s.z;
-            Debug.Log($"Offset: {i} - nCols={nCols} col={col} row={row} offset={offset}");
+            //Debug.Log($"Offset: {i} - nCols={nCols} col={col} row={row} offset={offset}");
             l.Add(center - offset);
         }
         return l.ToArray();
