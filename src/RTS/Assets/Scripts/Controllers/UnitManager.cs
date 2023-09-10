@@ -21,11 +21,6 @@ public class UnitManager : MonoBehaviour
 
         if (IsPlayerFaction)
         {
-            if (_groundProjector == null)
-            {
-                _groundProjector = Instantiate(GroundProjectorPrefab, Vector3.zero, Quaternion.Euler(-90f, 0f, 0f), transform);
-            }
-
             InputController.Instance.OnSelectStart += OnSelectStart;
             InputController.Instance.OnSelectEnd += OnSelectEnd;
 
@@ -64,7 +59,7 @@ public class UnitManager : MonoBehaviour
     #region SelectUnit
     private bool _isSelecting;
     private Vector3 _selectStartPos;
-    private List<UnitController> _selectedUnits = new List<UnitController>();
+    private readonly List<UnitController> _selectedUnits = new();
 
     public void SelectUnits(UnitController unitController)
     {
@@ -138,7 +133,7 @@ public class UnitManager : MonoBehaviour
             return;
         }
 
-        Vector3 pos = _inputController.MouseRayHitPosition;
+        var pos = _inputController.MouseRayHitPosition;
 
         if ((pos - _selectStartPos).sqrMagnitude < 0.1f) // TODO: Threshold should be a parameter?
         {
@@ -155,9 +150,13 @@ public class UnitManager : MonoBehaviour
         else
         {
             var bounds = GeometryUtility.CalculateBounds(new Vector3[] { _selectStartPos, pos }, Matrix4x4.identity);
-            foreach (var collider in Physics.OverlapBox(bounds.center, new Vector3(bounds.size.x * 0.5f, 1000, bounds.size.z * 0.5f) ))
+            foreach (var hitCollider in Physics.OverlapBox(
+                            bounds.center, 
+                            new Vector3(bounds.size.x * 0.5f, 1000, bounds.size.z * 0.5f)
+                         )
+                    )
             {
-                var unitController = collider.GetComponentInParent<UnitController>();
+                var unitController = hitCollider.GetComponentInParent<UnitController>();
                 if (unitController != null && _selectedUnits.Contains(unitController) == false)
                 {
                     _selectedUnits.Add(unitController);
@@ -174,7 +173,7 @@ public class UnitManager : MonoBehaviour
             return;
         }
 
-        var bounds = GeometryUtility.CalculateBounds(new Vector3[] {_selectStartPos, _inputController.MouseRayHitPosition }, Matrix4x4.identity);
+        var bounds = GeometryUtility.CalculateBounds(new[] {_selectStartPos, _inputController.MouseRayHitPosition }, Matrix4x4.identity);
         SetGroundProjector(bounds.center, SelectProjectorMaterial, bounds.size.x, bounds.size.z);
     }
     #endregion SelectUnit
@@ -196,14 +195,14 @@ public class UnitManager : MonoBehaviour
         {
             return;
         }
-        Vector3 pos = InputController.Instance.MouseRayHitPosition;
+        var pos = InputController.Instance.MouseRayHitPosition;
         var go = Instantiate (UnitToPlace.UnitPrefab, pos, Quaternion.identity);
         var unit = go.GetComponent<UnitController>();
         unit.UnitManager = this;
 
         if (unit.UnitDefinition.AffectsNavMesh)
         {
-            TerrainManager.Instance.RebuildNavMesh(pos, unit.UnitDefinition.Size.magnitude);
+            TerrainManager.Instance.UpdateNavMesh();
         }
 
         // TODO: Store a reference to the unit
@@ -282,9 +281,9 @@ public class UnitManager : MonoBehaviour
     /// <returns></returns>
     private Vector3?[] ComputeTargetPositions(Vector3 center, List<UnitController> units)
     {
-        List<Vector3?> l = new List<Vector3?>();
-        int nCols = Mathf.FloorToInt(Mathf.Sqrt(units.Count));
-        for (int i = 0; i < units.Count; i++)
+        var l = new List<Vector3?>();
+        var nCols = Mathf.FloorToInt(Mathf.Sqrt(units.Count));
+        for (var i = 0; i < units.Count; i++)
         {
             var unit = units[i];
 
@@ -294,9 +293,9 @@ public class UnitManager : MonoBehaviour
                 continue;
             }
 
-            int row = i / nCols;
-            int col = i % nCols;
-            Vector3 s = unit.UnitDefinition.Size;
+            var row = i / nCols;
+            var col = i % nCols;
+            var s = unit.UnitDefinition.Size;
 
             // TODO: This isn't even correct. It was supposed to  place all units around the centre point but it does not.
             var offset = new Vector3((col - (nCols / 2f)) * s.x, 0f, (row - (nCols / 2f))) * s.z;
@@ -312,10 +311,15 @@ public class UnitManager : MonoBehaviour
 
     private void SetGroundProjector(Vector3 pos, Material material, float width, float height)
     {
+        if (_groundProjector == null)
+        {
+            _groundProjector = Instantiate(GroundProjectorPrefab, Vector3.zero, Quaternion.Euler(-90f, 0f, 0f), transform);
+        }
+
         _groundProjector.transform.position = pos;
-        var _projector = _groundProjector.GetComponent<DecalProjector>();
-        _projector.material = material;
-        _projector.size = new Vector3(width, height, 50f);
+        var projector = _groundProjector.GetComponent<DecalProjector>();
+        projector.material = material;
+        projector.size = new Vector3(width, height, 50f);
 
         _groundProjector.gameObject.SetActive(true);
     }
