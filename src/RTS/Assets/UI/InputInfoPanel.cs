@@ -1,42 +1,46 @@
 using TMPro;
 using UnityEngine;
 
-public class InputInfoPanel : MonoBehaviour
+namespace RTS.UI
 {
-    public TMP_Text ContentText;
-
-    private InputController _inputController;
-
-    private void Start()
+    public class InputInfoPanel : MonoBehaviour
     {
-        _inputController = InputController.Instance;
-        if (_inputController == null )
-        {
-            Debug.LogError("SelectionInfoPanel.Start: No InputController found.");
-            gameObject.SetActive(false);
-            return;
-        }
-    }
-    private void Update()
-    {
-        string s = "";
-        s += "ActionMap:     " + _inputController.CurrentActionMapId;
+        public TMP_Text ContentText;
 
-        if (_inputController.MouseRayHitPosition != null)
+        private InputController _inputController;
+
+        private void Start()
         {
-            s += "\nMouseRayHit:   " + _inputController.MouseRayHitPosition;
+            _inputController = InputController.Instance;
+            if (_inputController == null)
+            {
+                Debug.LogError("SelectionInfoPanel.Start: No InputController found.");
+                gameObject.SetActive(false);
+                return;
+            }
         }
 
-        if (_inputController.MouseRayHitObject != null)
+        private void Update()
         {
-            s += "\nMouseRayHitObj: " + _inputController.MouseRayHitObject.name;
-        }
+            string s = "";
+            s += "ActionMap:     " + _inputController.CurrentActionMapId;
 
-        if (FactionController.Instance.GetPlayerUnitManager().UnitToPlace != null)
-        {
-            s += "\nUnitToPlace:   " + FactionController.Instance.GetPlayerUnitManager().UnitToPlace.Name;
-        }
+            if (_inputController.MouseRayHitPosition != null)
+            {
+                s += "\nMouseRayHit:   " + _inputController.MouseRayHitPosition;
+            }
 
-        ContentText.text = s;
+            if (_inputController.MouseRayHitObject != null)
+            {
+                s += "\nMouseRayHitObj: " + _inputController.MouseRayHitObject.name;
+            }
+
+            if (FactionController.Instance.GetPlayerUnitManager().UnitToPlace != null)
+            {
+                s += "\nUnitToPlace:   " + FactionController.Instance.GetPlayerUnitManager().UnitToPlace.Name;
+            }
+
+            ContentText.text = s;
+        }
     }
 }

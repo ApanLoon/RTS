@@ -1,3 +1,4 @@
+using RTS.Definitions;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,6 +9,14 @@ public class UnitController : MonoBehaviour
     public UnitManager UnitManager;
 
     public GameObject MoveTargetIndicatorPrefab;
+
+    public float DeflectorStrength { get; protected set; } = 1f;
+    public float Health { get; protected set; } = 1f;
+
+    /// <summary>
+    /// TODO: Make the name something unique per unit
+    /// </summary>
+    public string Name => gameObject.name;
 
     private NavMeshAgent _agent;
     private GameObject _moveTargetIndicator;

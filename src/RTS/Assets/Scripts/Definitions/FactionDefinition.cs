@@ -1,14 +1,17 @@
 
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Faction definition", menuName = "Definitions/Faction")]
-public class FactionDefinition : ScriptableObject
+namespace RTS.Definitions
 {
-    public string Name;
-    public Color Colour;
-    public Material DecalMaterial;
+    [CreateAssetMenu(fileName = "New Faction definition", menuName = "Definitions/Faction")]
+    public class FactionDefinition : ScriptableObject
+    {
+        public string Name;
+        public Color Colour;
+        public Material DecalMaterial;
 
-    public List<UnitDefinition> UnitDefinitions;
+        public List<UnitDefinition> UnitDefinitions;
+    }
 }
+
