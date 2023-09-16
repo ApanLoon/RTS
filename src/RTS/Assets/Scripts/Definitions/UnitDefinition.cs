@@ -1,8 +1,9 @@
 using UnityEngine;
-
-[CreateAssetMenu(fileName = "New Unit definition", menuName = "Definitions/Unit")]
-public class UnitDefinition : ScriptableObject
+namespace RTS.Definitions
 {
+    [CreateAssetMenu(fileName = "New Unit definition", menuName = "Definitions/Unit")]
+    public class UnitDefinition : ScriptableObject
+    {
     /// <summary>
     /// Name of the unit
     /// </summary>
@@ -27,4 +28,10 @@ public class UnitDefinition : ScriptableObject
     /// If this is false, any movement commands sent to units of this type will be ignored
     /// </summary>
     public bool CanMove = false;
+
+    /// <summary>
+    /// Not all units have deflector shields
+    /// </summary>
+    public bool HasDeflector = false;
+    }
 }

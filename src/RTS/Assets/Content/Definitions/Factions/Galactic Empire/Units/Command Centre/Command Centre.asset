@@ -17,3 +17,5 @@ MonoBehaviour:
   UnitPrefab: {fileID: 4411203511954778571, guid: 0f73978d1ac0a224caed76365629a6e6,
     type: 3}
   AffectsNavMesh: 1
+  CanMove: 0
+  HasDeflector: 1
