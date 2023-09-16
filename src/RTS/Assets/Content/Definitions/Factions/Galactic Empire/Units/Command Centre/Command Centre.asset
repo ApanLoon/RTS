@@ -16,3 +16,4 @@ MonoBehaviour:
   Size: {x: 15, y: 15, z: 7.5}
   UnitPrefab: {fileID: 4411203511954778571, guid: 0f73978d1ac0a224caed76365629a6e6,
     type: 3}
+  AffectsNavMesh: 1

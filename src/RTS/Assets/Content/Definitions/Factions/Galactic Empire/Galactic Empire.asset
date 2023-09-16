@@ -16,5 +16,5 @@ MonoBehaviour:
   Colour: {r: 0.05882353, g: 0.30588236, b: 0.5529412, a: 0}
   DecalMaterial: {fileID: 2100000, guid: 00731440ad15edc4d9752e68e2b99d0e, type: 2}
   UnitDefinitions:
-  - {fileID: 11400000, guid: 3f9044d7431fde34089eae16db557cd2, type: 2}
   - {fileID: 11400000, guid: aabc3b4a56f1b3548a2d7167d4029e36, type: 2}
+  - {fileID: 11400000, guid: 3f9044d7431fde34089eae16db557cd2, type: 2}
