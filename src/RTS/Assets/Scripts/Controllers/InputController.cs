@@ -15,8 +15,8 @@ public class InputController : MonoBehaviour
     public event Action<bool, Vector2, float> OnCameraOrbit;
     public event Action<float> OnCameraDolly;
 
-    public event Action OnSelectStart;
-    public event Action OnSelectEnd;
+    public event Action<bool> OnSelectStart;
+    public event Action<bool> OnSelectEnd;
 
     public event Action OnPlace;
     public event Action OnCancel;
@@ -92,6 +92,7 @@ public class InputController : MonoBehaviour
                 { "CameraDollyAction", OnCameraDollyAction },
 
                 { "SelectAction", OnSelectAction },
+                { "AddSelectAction", OnAddSelectAction },
                 { "PlaceAction",  OnPlaceAction  },
                 { "CancelAction", OnCancelAction },
 
@@ -195,15 +196,32 @@ public class InputController : MonoBehaviour
 
     private void OnSelectAction(InputAction context)
     {
-        bool isSelecting = context.IsPressed();
+        var isSelecting = context.IsPressed();
 
-        if (_onSelect == false && isSelecting == true)
+        switch (_onSelect)
         {
-            OnSelectStart?.Invoke();
+            case false when isSelecting == true:
+                OnSelectStart?.Invoke(false);
+                break;
+            case true when isSelecting == false:
+                OnSelectEnd?.Invoke(false);
+                break;
         }
-        else if (_onSelect == true && isSelecting == false)
+
+        _onSelect = isSelecting;
+    }
+    private void OnAddSelectAction(InputAction context)
+    {
+        var isSelecting = context.IsPressed();
+
+        switch (_onSelect)
         {
-            OnSelectEnd?.Invoke();
+            case false when isSelecting == true:
+                OnSelectStart?.Invoke(true);
+                break;
+            case true when isSelecting == false:
+                OnSelectEnd?.Invoke(true);
+                break;
         }
 
         _onSelect = isSelecting;
