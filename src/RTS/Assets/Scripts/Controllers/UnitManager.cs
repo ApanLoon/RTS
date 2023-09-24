@@ -24,14 +24,14 @@ public class UnitManager : MonoBehaviour
             return;
         }
         Debug.Log($"UnitDefinitions.Count={FactionDefinition.UnitDefinitions.Count}");
-        PlaceUnit(FactionDefinition.UnitDefinitions[0], new Vector3(-31f, 50f, -28f));
+        PlaceUnit(FactionDefinition.UnitDefinitions[0], new Vector3(-31f, 50f, -28f), "Alpha");
 
-        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-25f, 50f, -45f));
-        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-27f, 50f, -45f));
-        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-29f, 50f, -45f));
-        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-31f, 50f, -45f));
-        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-33f, 50f, -45f));
-        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-35f, 50f, -45f));
+        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-25f, 50f, -45f), "TK 1402");
+        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-27f, 50f, -45f), "TK 1138");
+        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-29f, 50f, -45f), "TK 1654");
+        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-31f, 50f, -45f), "TK 1313");
+        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-33f, 50f, -45f), "TK 3182");
+        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-35f, 50f, -45f), "TK 4098");
     }
 
     #region MonoBehaviour
@@ -128,7 +128,7 @@ public class UnitManager : MonoBehaviour
         ReturnToIdle();
     }
 
-    private void OnSelectStart()
+    private void OnSelectStart(bool add)
     {
         if (_inputController.HasMouseRayHit == false)
         {
@@ -136,9 +136,13 @@ public class UnitManager : MonoBehaviour
         }
         _isSelecting = true;
         _selectStartPos = _inputController.MouseRayHitPosition;
-        _selectedUnits.Clear();
+
+        if (add == false)
+        {
+            _selectedUnits.Clear();
+        }
     }
-    private void OnSelectEnd()
+    private void OnSelectEnd(bool add)
     {
         if (_isSelecting == false)
         {
@@ -163,29 +167,42 @@ public class UnitManager : MonoBehaviour
             if (_inputController.MouseRayHitObject != null)
             {
                 var unitController = _inputController.MouseRayHitObject.GetComponentInParent<UnitController>();
-                if (unitController != null)
-                {
-                    _selectedUnits.Add(unitController);
-                }
+                AddToSelection(unitController, add);
             }
         }
         else
         {
             var bounds = GeometryUtility.CalculateBounds(new Vector3[] { _selectStartPos, pos }, Matrix4x4.identity);
-            foreach (var hitCollider in Physics.OverlapBox(
+
+            foreach (var unitController in Physics.OverlapBox(
                             bounds.center, 
                             new Vector3(bounds.size.x * 0.5f, 1000, bounds.size.z * 0.5f)
-                         )
+                         ).Select(x => x.GetComponentInParent<UnitController>()).Where(x=> x != null).Distinct()
                     )
             {
-                var unitController = hitCollider.GetComponentInParent<UnitController>();
-                if (unitController != null && _selectedUnits.Contains(unitController) == false)
-                {
-                    _selectedUnits.Add(unitController);
-                }
+                AddToSelection(unitController, add);
             }
         }
         SelectionChanged();
+    }
+
+    private void AddToSelection(UnitController unitController, bool add)
+    {
+        if (unitController == null)
+        {
+            return;
+        }
+        if (_selectedUnits.Contains(unitController))
+        {
+            if (add)
+            {
+                _selectedUnits.Remove(unitController);
+            }
+        }
+        else
+        {
+            _selectedUnits.Add(unitController);
+        }
     }
 
     private void Update_Select()
@@ -211,12 +228,13 @@ public class UnitManager : MonoBehaviour
         _isPlacing = true;
     }
 
-    private void PlaceUnit(UnitDefinition unitDefinition, Vector3 pos)
+    private void PlaceUnit(UnitDefinition unitDefinition, Vector3 pos, string designation)
     {
         pos.y = TerrainManager.Instance.TerrainHeightAt(pos);
-        Debug.Log($"Placing {unitDefinition.Name} at {pos}.");
+        Debug.Log($"Placing {unitDefinition.Name} {designation} at {pos}.");
 
         var go = Instantiate(unitDefinition.UnitPrefab, pos, Quaternion.identity, transform);
+        go.name = $"{unitDefinition.Name} {designation}";
         var unit = go.GetComponent<UnitController>();
         unit.UnitManager = this;
 
@@ -236,7 +254,7 @@ public class UnitManager : MonoBehaviour
         }
         var pos = InputController.Instance.MouseRayHitPosition;
         
-        PlaceUnit(UnitToPlace, pos);
+        PlaceUnit(UnitToPlace, pos, "");
 
          _isPlacing = false;
         _groundProjector.gameObject.SetActive(false);

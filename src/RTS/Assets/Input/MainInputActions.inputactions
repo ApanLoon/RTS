@@ -42,6 +42,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "AddSelectAction",
+                    "type": "Button",
+                    "id": "ccf83f16-c8d7-4bb8-8f45-7c3537eec4b7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "SelectAction",
                     "type": "Button",
                     "id": "f6e6eed4-3d0d-4184-a79a-3ea58e1656b5",
@@ -205,6 +214,39 @@
                     "action": "SelectAction",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "a9af0878-5eaa-4b68-8a35-032a08c62556",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddSelectAction",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "84a11e51-655f-4258-a878-904c2d0cc849",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddSelectAction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "2c4e079d-81b8-4fb2-8dfd-d7924fe71513",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddSelectAction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -476,6 +518,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "AddSelectAction",
+                    "type": "Button",
+                    "id": "d34c6c56-1aa2-4f56-b4c8-51b14af81444",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "SelectAction",
                     "type": "Button",
                     "id": "45d4a08b-c007-4a7e-b7e7-2df8f2735710",
@@ -659,6 +710,39 @@
                     "action": "SelectAction",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "152195b6-c951-43de-b949-8bce587464df",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddSelectAction",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "cc89dc61-39c8-4d80-a230-e33c3070c620",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddSelectAction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "bfd01134-f72b-446c-abfd-0ce57333356c",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AddSelectAction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
