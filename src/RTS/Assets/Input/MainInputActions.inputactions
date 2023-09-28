@@ -15,6 +15,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "MouseDeltaAction",
+                    "type": "Value",
+                    "id": "ea71a049-0299-4863-90c0-c226029f2bf0",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "CameraMoveAction",
                     "type": "Value",
                     "id": "e4ba1a9f-df37-4c16-9f0c-cdb5bbe59181",
@@ -247,6 +256,17 @@
                     "action": "AddSelectAction",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "cb68272e-c30e-46d7-b8b6-6e4e10768c8f",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseDeltaAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -258,6 +278,15 @@
                     "name": "MousePosAction",
                     "type": "Value",
                     "id": "415d8157-b5c7-417f-a4b5-d94a50658db1",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MouseDeltaAction",
+                    "type": "Value",
+                    "id": "b6ca70bb-26fe-49a8-af77-67b0f317af5e",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -474,6 +503,17 @@
                     "action": "CancelAction",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cea5dd48-0600-419f-b35d-31eaef247f7b",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseDeltaAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -485,6 +525,15 @@
                     "name": "MousePosAction",
                     "type": "Value",
                     "id": "30f7e86a-a1fe-468b-8a66-1b1b94b2f4a2",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MouseDeltaAction",
+                    "type": "Value",
+                    "id": "64190c59-6d9a-4b60-bc62-9b44e1918a8c",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -743,6 +792,17 @@
                     "action": "AddSelectAction",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "d51c021d-bf3c-4947-8121-608698a5702e",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseDeltaAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
