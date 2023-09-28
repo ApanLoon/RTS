@@ -59,6 +59,7 @@ public class InputController : MonoBehaviour
     private Dictionary<string, Action<InputAction>> Actions;
 
     private Vector2 _mousePos;
+    private Vector2 _mouseDelta;
     private Vector2 _cameraMove;
     private bool _onCameraOrbit;
     private bool _prevOnCameraOrbit;
@@ -85,7 +86,8 @@ public class InputController : MonoBehaviour
         {
             Actions = new Dictionary<string, Action<InputAction>>()
             {
-                { "MousePosAction", OnMousePosAction },
+                { "MousePosAction",   OnMousePosAction },
+                { "MouseDeltaAction", OnMouseDeltaAction },
 
                 { "CameraMoveAction",  OnCameraMoveAction  },
                 { "CameraOrbitAction", OnCameraOrbitAction },
@@ -169,7 +171,7 @@ public class InputController : MonoBehaviour
 
         if (_onCameraOrbit == true || _prevOnCameraOrbit == true)
         {
-            OnCameraOrbit?.Invoke(_onCameraOrbit, _mousePos, deltaTime);
+            OnCameraOrbit?.Invoke(_onCameraOrbit, _mouseDelta, deltaTime);
             _prevOnCameraOrbit = _onCameraOrbit;
         }
     }
@@ -179,6 +181,12 @@ public class InputController : MonoBehaviour
     {
         _mousePos = context.ReadValue<Vector2>();
     }
+
+    private void OnMouseDeltaAction(InputAction context)
+    {
+        _mouseDelta = context.ReadValue<Vector2>();
+    }
+
     private void OnCameraMoveAction(InputAction context)
     {
         _cameraMove = context.ReadValue<Vector2>();
