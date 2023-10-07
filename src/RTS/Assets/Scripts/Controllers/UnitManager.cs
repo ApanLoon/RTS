@@ -19,19 +19,26 @@ public class UnitManager : MonoBehaviour
 
     private void PlaceDummyUnits()
     {
-        if (IsPlayerFaction == false)
+        switch (FactionDefinition.Name)
         {
-            return;
-        }
-        Debug.Log($"UnitDefinitions.Count={FactionDefinition.UnitDefinitions.Count}");
-        PlaceUnit(FactionDefinition.UnitDefinitions[0], new Vector3(-31f, 50f, -28f), "Alpha");
+            case "Galactic Empire":
+                PlaceUnit(FactionDefinition.UnitDefinitions[0], new Vector3(-31f, 50f, -28f), "Alpha");
 
-        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-25f, 50f, -45f), "TK 1402");
-        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-27f, 50f, -45f), "TK 1138");
-        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-29f, 50f, -45f), "TK 1654");
-        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-31f, 50f, -45f), "TK 1313");
-        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-33f, 50f, -45f), "TK 3182");
-        PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-35f, 50f, -45f), "TK 4098");
+                PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-25f, 50f, -45f), "TK 1402");
+                PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-27f, 50f, -45f), "TK 1138");
+                PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-29f, 50f, -45f), "TK 1654");
+                PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-31f, 50f, -45f), "TK 1313");
+                PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-33f, 50f, -45f), "TK 3182");
+                PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-35f, 50f, -45f), "TK 4098");
+                break;
+
+            case "Rebel Alliance":
+                PlaceUnit(FactionDefinition.UnitDefinitions[0], new Vector3(-2f, 63f, -28f), "Vero Vene");
+                PlaceUnit(FactionDefinition.UnitDefinitions[0], new Vector3(-4f, 63f, -28f), "Gavarl Dystra");
+                PlaceUnit(FactionDefinition.UnitDefinitions[0], new Vector3(-6f, 63f, -28f), "Val Horne");
+                PlaceUnit(FactionDefinition.UnitDefinitions[0], new Vector3(-8f, 63f, -28f), "Maxir Thule");
+                break;
+        }
     }
 
     #region MonoBehaviour
@@ -48,9 +55,9 @@ public class UnitManager : MonoBehaviour
             InputController.Instance.OnCancel += OnCancel;
 
             InputController.Instance.OnCommand += OnCommand;
-
-            PlaceDummyUnits();
         }
+
+        PlaceDummyUnits();
     }
 
     private void Update()

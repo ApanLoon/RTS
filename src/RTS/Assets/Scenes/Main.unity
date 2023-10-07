@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2176.6135, g: 2298.385, b: 3384.8286, a: 1}
+  m_IndirectSpecularColor: {r: 2175.7034, g: 2294.8948, b: 3372.6958, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -288,6 +288,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 458246056}
+  - {fileID: 1069413284}
   m_Father: {fileID: 732798631}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1335,7 +1336,7 @@ GameObject:
   - component: {fileID: 458246056}
   - component: {fileID: 458246057}
   m_Layer: 0
-  m_Name: UnitManager
+  m_Name: UnitManager Galactic Empire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2146,6 +2147,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1041501431}
   m_CullTransparentMesh: 1
+--- !u!1 &1069413283
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1069413284}
+  - component: {fileID: 1069413285}
+  m_Layer: 0
+  m_Name: UnitManager Rebel Alliance
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1069413284
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069413283}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 26587628}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1069413285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069413283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0b3e87a9e353ed4dbdaf2b8748cb76f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GroundProjectorPrefab: {fileID: 4625937204080233118, guid: 392dcb5acb082d34f8a4096b763e625d,
+    type: 3}
+  SelectProjectorMaterial: {fileID: 2100000, guid: 8cc23ff8c4d0e5a4c83a963c7e711c9b,
+    type: 2}
+  FactionDefinition: {fileID: 11400000, guid: 29f5f4defd40d114aa9a95f35bf9133a, type: 2}
+  IsPlayerFaction: 0
 --- !u!1 &1095888929
 GameObject:
   m_ObjectHideFlags: 0
