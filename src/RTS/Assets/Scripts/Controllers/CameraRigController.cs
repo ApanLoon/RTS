@@ -103,4 +103,12 @@ public class CameraRigController : MonoBehaviour
         pos.y = TerrainManager.Instance.TerrainHeightAt(pos);
         transform.position = pos;
     }
+
+    public void MoveTo(Vector3 pos)
+    {
+        // TODO: Smoothly move the camera rig
+
+        transform.position = pos;
+        ClampToTerrain();
+    }
 }
