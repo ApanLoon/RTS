@@ -5,6 +5,9 @@ public class MiniMapCameraController : MonoBehaviour
     public Transform Target;
     private Camera _camera;
 
+    public Vector3 Position => transform.position;
+    public float OrthographicSize => _camera.orthographicSize;
+
     private void Start()
     {
         _camera = GetComponentInChildren<Camera>();

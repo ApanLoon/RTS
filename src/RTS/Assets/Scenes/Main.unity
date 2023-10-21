@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2175.6145, g: 2294.7327, b: 3372.2544, a: 1}
+  m_IndirectSpecularColor: {r: 2168.8264, g: 2281.053, b: 3333.399, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -319,6 +319,7 @@ GameObject:
   - component: {fileID: 116175070}
   - component: {fileID: 116175072}
   - component: {fileID: 116175071}
+  - component: {fileID: 116175073}
   m_Layer: 5
   m_Name: MiniMap
   m_TagString: Untagged
@@ -385,6 +386,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 116175069}
   m_CullTransparentMesh: 1
+--- !u!114 &116175073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116175069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e755259e95cbb0a44900f3e2a83fcd92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraRigController: {fileID: 819633625}
+  _miniMapCameraController: {fileID: 1625473618}
 --- !u!1 &157207112
 GameObject:
   m_ObjectHideFlags: 0
@@ -5019,6 +5034,8 @@ GameObject:
   - component: {fileID: 2027931804}
   - component: {fileID: 2027931806}
   - component: {fileID: 2027931805}
+  - component: {fileID: 2027931807}
+  - component: {fileID: 2027931808}
   m_Layer: 5
   m_Name: RawImage
   m_TagString: Untagged
@@ -5081,3 +5098,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027931803}
   m_CullTransparentMesh: 1
+--- !u!114 &2027931807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027931803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2027931808}
+          m_TargetAssemblyTypeName: MiniMapImageController, Assembly-CSharp
+          m_MethodName: OnClick
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &2027931808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027931803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2250b6a4c2392204b9773c57e4791b42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
