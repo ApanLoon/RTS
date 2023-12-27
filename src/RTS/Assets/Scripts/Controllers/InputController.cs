@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XInput;
 
 public class InputController : MonoBehaviour
 {
@@ -128,8 +129,21 @@ public class InputController : MonoBehaviour
         Update_MouseRaycast();
 
         Update_RunActions();
-
         Update_Camera(deltaTime);
+
+        #region Debug
+        DebugInfoPanel.Log("ActionMap", CurrentActionMapId.ToString());
+        if (HasMouseRayHit)
+        {
+            DebugInfoPanel.Log("MouseRayHit", MouseRayHitPosition.ToString());
+            DebugInfoPanel.Log("MouseRayHitObj", MouseRayHitObject.name);
+        }
+        else
+        {
+            DebugInfoPanel.Remove("MouseRayHit");
+            DebugInfoPanel.Remove("MouseRayHitObj");
+        }
+        #endregion Debug
     }
 
     private void Update_RunActions()

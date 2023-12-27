@@ -19,6 +19,24 @@ public class FactionController : MonoBehaviour
         Instance = this;
     }
 
+    private void Update()
+    {
+        #region Debug
+        for (var i = 0; i < transform.childCount; i++)
+        {
+            var unitManager = transform.GetChild(i).GetComponent<UnitManager>();
+            if (unitManager.UnitToPlace == null)
+            {
+                DebugInfoPanel.Remove($"{unitManager.FactionDefinition.Name} UnitToPlace");
+            }
+            else
+            {
+                DebugInfoPanel.Log($"{unitManager.FactionDefinition.Name} UnitToPlace", unitManager.UnitToPlace.Name);
+            }
+        }
+        #endregion Debug
+    }
+
     public UnitManager GetPlayerUnitManager()
     {
         // TODO: Find the correct manager
