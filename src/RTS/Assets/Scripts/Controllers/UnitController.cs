@@ -1,3 +1,4 @@
+using System.Globalization;
 using RTS.Definitions;
 using UnityEngine;
 using UnityEngine.AI;
@@ -86,10 +87,19 @@ public class UnitController : MonoBehaviour
 
         if (_animator != null && _rigidBody != null)
         {
-            var velocity = _agent.velocity;
-            _animator.SetFloat("VFwd", velocity.z);
-            var turn = _rigidBody.angularVelocity.z;
-            _animator.SetFloat("VRight", turn);
+            var vFwd = (_agent.velocity.magnitude / _agent.speed);
+            _animator.SetFloat("VFwd", vFwd);
+            // TODO: How to control the turn animation?
+            //var vRight = _rigidBody.angularVelocity.z;
+            //_animator.SetFloat("VRight", vRight);
+
+            DebugInfoPanel.Log($"{Name} VFwd", vFwd.ToString(CultureInfo.InvariantCulture));
+            //DebugInfoPanel.Log($"{Name} VRight", vRight.ToString(CultureInfo.InvariantCulture));
+        }
+        else
+        {
+            DebugInfoPanel.Remove($"{Name} VFwd");
+            //DebugInfoPanel.Remove($"{Name} VRight");
         }
 
         if (HasReachedDestination())
