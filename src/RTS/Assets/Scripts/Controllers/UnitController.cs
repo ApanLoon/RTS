@@ -103,7 +103,7 @@ public class UnitController : MonoBehaviour
         {
             DebugInfoPanel.Remove($"{Name} VFwd");
             //DebugInfoPanel.Remove($"{Name} VRight");
-            DebugInfoPanel.Remove($"{Name} State");
+            //DebugInfoPanel.Remove($"{Name} State");
         }
 
         if (HasReachedDestination())
