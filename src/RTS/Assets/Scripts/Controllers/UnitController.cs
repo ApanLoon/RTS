@@ -18,7 +18,9 @@ public class UnitController : MonoBehaviour
     /// </summary>
     public string Name => gameObject.name;
 
+    private Rigidbody _rigidBody;
     private NavMeshAgent _agent;
+    private Animator _animator;
     private GameObject _moveTargetIndicator;
 
     public void Command_MoveTo (Vector3 target)
@@ -63,7 +65,9 @@ public class UnitController : MonoBehaviour
 
     private void Start()
     {
+        _rigidBody = GetComponent<Rigidbody>();
         _agent = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
 
         if (MoveTargetIndicatorPrefab == null)
         {
@@ -78,6 +82,14 @@ public class UnitController : MonoBehaviour
         if (UnitDefinition.CanMove == false)
         {
             return;
+        }
+
+        if (_animator != null && _rigidBody != null)
+        {
+            var velocity = _agent.velocity;
+            _animator.SetFloat("VFwd", velocity.z);
+            var turn = _rigidBody.angularVelocity.z;
+            _animator.SetFloat("VRight", turn);
         }
 
         if (HasReachedDestination())

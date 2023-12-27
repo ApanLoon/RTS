@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1880962772723647541}
   - component: {fileID: 8769757434928121184}
   m_Layer: 0
-  m_Name: Stormtrooper
+  m_Name: Pilltrooper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

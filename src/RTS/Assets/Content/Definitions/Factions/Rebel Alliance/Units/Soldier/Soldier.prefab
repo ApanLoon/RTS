@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3167395949169375461}
   - component: {fileID: -5496489336684827292}
   - component: {fileID: 1962822834937085061}
+  - component: {fileID: -2688450307339400784}
   m_Layer: 0
   m_Name: Soldier
   m_TagString: Untagged
@@ -73,6 +74,27 @@ MonoBehaviour:
   UnitManager: {fileID: 0}
   MoveTargetIndicatorPrefab: {fileID: 1196972548272172876, guid: f45b1dece5eae854f98983d56e611779,
     type: 3}
+--- !u!95 &-2688450307339400784
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961999805506963869}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b681a328a6fd1324a86dadaa93e310cb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6446550928189871738
 GameObject:
   m_ObjectHideFlags: 0

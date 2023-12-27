@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43ad35b63ee930949a6226448f693f07, type: 3}
-  m_Name: Stormtrooper
+  m_Name: Pilltrooper
   m_EditorClassIdentifier: 
-  Name: Stormtrooper
+  Name: Pilltrooper
   Size: {x: 1, y: 1, z: 2}
-  UnitPrefab: {fileID: 5217903048115235905, guid: 274df5cc0ad499649aff1249206d0e42,
+  UnitPrefab: {fileID: 5794924524670022793, guid: 7c656d0f0c97d574eba65b6419894de3,
     type: 3}
   AffectsNavMesh: 0
   CanMove: 1

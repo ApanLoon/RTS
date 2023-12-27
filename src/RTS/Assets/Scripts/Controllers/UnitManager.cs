@@ -24,6 +24,8 @@ public class UnitManager : MonoBehaviour
             case "Galactic Empire":
                 PlaceUnit(FactionDefinition.UnitDefinitions[0], new Vector3(-31f, 50f, -28f), "Alpha");
 
+                PlaceUnit(FactionDefinition.UnitDefinitions[2], new Vector3(-32f, 61f, -42f), "TK 9362");
+
                 PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-25f, 50f, -45f), "TK 1402");
                 PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-27f, 50f, -45f), "TK 1138");
                 PlaceUnit(FactionDefinition.UnitDefinitions[1], new Vector3(-29f, 50f, -45f), "TK 1654");
