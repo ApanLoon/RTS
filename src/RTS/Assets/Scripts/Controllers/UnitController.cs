@@ -88,6 +88,10 @@ public class UnitController : MonoBehaviour
         if (_animator != null && _rigidBody != null)
         {
             var vFwd = (_agent.velocity.magnitude / _agent.speed);
+            if (vFwd < 0.1)
+            {
+                vFwd = 0f;
+            }
             _animator.SetFloat("VFwd", vFwd);
             // TODO: How to control the turn animation?
             //var vRight = _rigidBody.angularVelocity.z;
