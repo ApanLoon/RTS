@@ -88,6 +88,10 @@ public class UnitController : MonoBehaviour
         if (_animator != null && _rigidBody != null)
         {
             var vFwd = (_agent.velocity.magnitude / _agent.speed);
+            if (vFwd < 0.1)
+            {
+                vFwd = 0f;
+            }
             _animator.SetFloat("VFwd", vFwd);
             // TODO: How to control the turn animation?
             //var vRight = _rigidBody.angularVelocity.z;
@@ -95,11 +99,15 @@ public class UnitController : MonoBehaviour
 
             DebugInfoPanel.Log($"{Name} VFwd", vFwd.ToString(CultureInfo.InvariantCulture));
             //DebugInfoPanel.Log($"{Name} VRight", vRight.ToString(CultureInfo.InvariantCulture));
+
+            //var x = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+            //DebugInfoPanel.Log($"{Name} State", x.ToString() );
         }
         else
         {
             DebugInfoPanel.Remove($"{Name} VFwd");
             //DebugInfoPanel.Remove($"{Name} VRight");
+            //DebugInfoPanel.Remove($"{Name} State");
         }
 
         if (HasReachedDestination())
