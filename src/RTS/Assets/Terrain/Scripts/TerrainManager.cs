@@ -30,8 +30,6 @@ public class TerrainManager : MonoBehaviour
 
     /// <summary>
     /// Call this when a fixed unit has been placed or removed.
-    ///
-    /// TODO: Agents who are currently moving glitch a bit when this is called.
     /// </summary>
     public void UpdateNavMesh()
     {
