@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XInput;
 
 public class InputController : MonoBehaviour
 {
@@ -155,7 +154,7 @@ public class InputController : MonoBehaviour
             {
                 Actions[action.name](action);
             }
-            if (action.WasReleasedThisFrame())
+            else if (action.WasReleasedThisFrame())
             {
                 Actions[action.name](action);
             }
@@ -251,16 +250,30 @@ public class InputController : MonoBehaviour
 
     private void OnPlaceAction(InputAction context)
     {
+        if (context.WasReleasedThisFrame() == false)
+        {
+            return;
+        }
+
         OnPlace?.Invoke();
     }
 
     private void OnCancelAction(InputAction context)
     {
+        if (context.WasReleasedThisFrame() == false)
+        {
+            return;
+        }
+
         OnCancel?.Invoke();
     }
 
     private void OnCommandAction(InputAction context)
     {
+        if (context.WasReleasedThisFrame() == false)
+        {
+            return;
+        }
         OnCommand?.Invoke();
     }
     #endregion InputActions
