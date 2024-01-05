@@ -13,6 +13,8 @@ public class UnitManager : MonoBehaviour
     public FactionDefinition FactionDefinition;
     public bool IsPlayerFaction;
 
+    public float SelectedAudioClipCoolDown = 1f;
+
     public event Action<List<UnitController>> OnSelectionChanged;
 
     private InputController _inputController;
@@ -64,6 +66,8 @@ public class UnitManager : MonoBehaviour
 
     private void Update()
     {
+        _selectedAudioClipCoolDownRemaining = Mathf.Max(_selectedAudioClipCoolDownRemaining - Time.deltaTime, 0f);
+
         if (IsPlayerFaction)
         {
             Update_Select();
@@ -91,11 +95,15 @@ public class UnitManager : MonoBehaviour
     private bool _isSelecting;
     private Vector3 _selectStartPos;
     private readonly List<UnitController> _selectedUnits = new();
+    private float _selectedAudioClipCoolDownRemaining;
 
     public void SelectUnits(UnitController unitController)
     {
         _selectedUnits.Clear();
         _selectedUnits.Add(unitController);
+
+        ElectLeader();
+
         SelectionChanged();
     }
 
@@ -103,6 +111,9 @@ public class UnitManager : MonoBehaviour
     {
         _selectedUnits.Clear();
         _selectedUnits.AddRange(unitControllers);
+
+        ElectLeader();
+
         SelectionChanged();
     }
 
@@ -212,6 +223,8 @@ public class UnitManager : MonoBehaviour
         {
             _selectedUnits.Add(unitController);
         }
+
+        ElectLeader();
     }
 
     private void Update_Select()
@@ -224,6 +237,19 @@ public class UnitManager : MonoBehaviour
         var bounds = GeometryUtility.CalculateBounds(new[] {_selectStartPos, _inputController.MouseRayHitPosition }, Matrix4x4.identity);
         SetGroundProjector(bounds.center, SelectProjectorMaterial, bounds.size.x, bounds.size.z);
     }
+
+    private void ElectLeader()
+    {
+        // TODO: Elect group leader
+
+        if (_selectedAudioClipCoolDownRemaining <= 0)
+        {
+            var leader = _selectedUnits[0];
+            AudioController.PlayAudioClip(leader.UnitDefinition.GetRandomSelectedAudioClip());
+            _selectedAudioClipCoolDownRemaining = SelectedAudioClipCoolDown;
+        }
+    }
+
     #endregion SelectUnit
 
     #region PlaceUnit
@@ -327,6 +353,11 @@ public class UnitManager : MonoBehaviour
                 unit.Command_MoveTo((Vector3)pos);
             }
         }
+
+
+        // TODO: Get group leader
+        var leader = _selectedUnits[0];
+        AudioController.PlayAudioClip(leader.UnitDefinition.GetRandomMoveToAudioClip());
     }
 
     /// <summary>

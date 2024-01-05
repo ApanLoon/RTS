@@ -24,12 +24,16 @@ public class UnitController : MonoBehaviour
     private Animator _animator;
     private GameObject _moveTargetIndicator;
 
+    private bool _wasMovingLastFrame;
+
     public void Command_MoveTo (Vector3 target)
     {
         if (UnitDefinition.CanMove == false)
         {
             return;
         }
+
+        _wasMovingLastFrame = false; // Make sure that we doesn't immediately hide the MoveTargetIndicator if we where already moving.
         _agent.SetDestination(target);
         SetMoveTargetIndicator(target);
     }
@@ -74,7 +78,7 @@ public class UnitController : MonoBehaviour
         {
             return;
         }
-        _moveTargetIndicator = Instantiate(MoveTargetIndicatorPrefab, Vector3.zero, Quaternion.identity, null); // TODO: Where should this be parented?
+        _moveTargetIndicator = Instantiate(MoveTargetIndicatorPrefab, Vector3.zero, Quaternion.identity, UnitManager.transform); // TODO: Where should this be parented?
         HideMoveTargetIndicator();
     }
 
@@ -110,15 +114,18 @@ public class UnitController : MonoBehaviour
             //DebugInfoPanel.Remove($"{Name} State");
         }
 
-        if (HasReachedDestination())
+        var hasReachedDestination = HasReachedDestination();
+        if (_wasMovingLastFrame && hasReachedDestination)
         {
             HideMoveTargetIndicator();
         }
+        _wasMovingLastFrame = hasReachedDestination == false;
     }
 
     private bool HasReachedDestination()
     {
-        return ((_agent.pathPending == true) // We are waiting for path finding, so we are not there yet
+        return ((Vector3.Distance(_agent.destination, transform.position) <= _agent.stoppingDistance) // Have we been given a new destination but not yet started to compute the path?
+                || (_agent.pathPending == true) // We are waiting for path finding, so we are not there yet
                 || (
                         (_agent.remainingDistance <= _agent.stoppingDistance) // We are close enough
                      && (_agent.hasPath == false || _agent.velocity.sqrMagnitude == 0f) // We have no path and are no longer moving

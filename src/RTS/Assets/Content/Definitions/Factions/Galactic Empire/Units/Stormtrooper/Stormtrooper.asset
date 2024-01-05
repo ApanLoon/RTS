@@ -19,3 +19,21 @@ MonoBehaviour:
   AffectsNavMesh: 0
   CanMove: 1
   HasDeflector: 0
+  SelectAudioClips:
+  - {fileID: 8300000, guid: c4437b0c879105b49995631908f68b19, type: 3}
+  - {fileID: 8300000, guid: a5d9ff8619326a9458893bf7621c5493, type: 3}
+  - {fileID: 8300000, guid: 9d5e8ee01af2d2c4bb6e16533cb1d9de, type: 3}
+  - {fileID: 8300000, guid: 8929f6795378bab46ae53b406c917e7c, type: 3}
+  - {fileID: 8300000, guid: a1b57fb4d3c66924e874e42c316e4f36, type: 3}
+  - {fileID: 8300000, guid: bf448d9d68de9ad4a9bb1f8dc7e2cf22, type: 3}
+  - {fileID: 8300000, guid: 9ae91f67defa8ff49bd1d0c8fa5eebc0, type: 3}
+  MoveToAudioClips:
+  - {fileID: 8300000, guid: 8aeaa6c5668d9104392e591fc889ea87, type: 3}
+  - {fileID: 8300000, guid: f920fc2d49b370a4aadde6763b9d568c, type: 3}
+  - {fileID: 8300000, guid: 68c9423d57c4de04c8116ef0a6eaa67c, type: 3}
+  - {fileID: 8300000, guid: 2c1816a584dac0442abc6f43093f3a7b, type: 3}
+  - {fileID: 8300000, guid: 2fa4f632585d4144c8350317d7b0b285, type: 3}
+  - {fileID: 8300000, guid: d027f097c49f250449154111c36b91be, type: 3}
+  - {fileID: 8300000, guid: c6c66cb5c54841742ab56f67bf45a469, type: 3}
+  - {fileID: 8300000, guid: 5cb4b33c4ad7f8b43b726eb80c3ef936, type: 3}
+  - {fileID: 8300000, guid: 34a7fc253b116b347a36e615131f89f3, type: 3}
