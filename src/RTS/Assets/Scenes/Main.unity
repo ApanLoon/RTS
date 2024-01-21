@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2185.8323, g: 2332.59, b: 3505.1763, a: 1}
+  m_IndirectSpecularColor: {r: 2185.8323, g: 2332.5667, b: 3505.1138, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1607,6 +1607,7 @@ MonoBehaviour:
     type: 2}
   FactionDefinition: {fileID: 11400000, guid: 7ce7e48848aac124bb370e876b3d3ed9, type: 2}
   IsPlayerFaction: 1
+  SelectedAudioClipCoolDown: 1
 --- !u!1 &607800348
 GameObject:
   m_ObjectHideFlags: 0
@@ -2682,6 +2683,7 @@ MonoBehaviour:
     type: 2}
   FactionDefinition: {fileID: 11400000, guid: 29f5f4defd40d114aa9a95f35bf9133a, type: 2}
   IsPlayerFaction: 0
+  SelectedAudioClipCoolDown: 1
 --- !u!1 &1095888929
 GameObject:
   m_ObjectHideFlags: 0

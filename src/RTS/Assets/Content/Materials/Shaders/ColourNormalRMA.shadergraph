@@ -96,6 +96,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "4e77578170454f449de2591dfa8f5c3c"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "29ef9f4c2d2f47228457bd17a3bee403"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "5ddf0901a30f4ce09ae769d4cfbead57"
                 },
                 "m_SlotId": 0
@@ -481,7 +495,7 @@
         "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"ce933e1e23d2529408313a1b318782a8\",\"type\":3}}",
         "m_Guid": ""
     },
-    "m_DefaultType": 0
+    "m_DefaultType": 3
 }
 
 {
@@ -1209,7 +1223,7 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_TextureType": 0,
+    "m_TextureType": 1,
     "m_NormalMapSpace": 0,
     "m_EnableGlobalMipBias": true,
     "m_MipSamplingMode": 0
@@ -1353,7 +1367,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "93e4309556134ebfa6ec09eb13c59959",
     "m_Id": 0,
-    "m_DisplayName": "Normal map (Not used - bug)",
+    "m_DisplayName": "Normal map",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -1633,10 +1647,10 @@
     "m_Guid": {
         "m_GuidSerialized": "3b6ce15f-1f8d-4bbc-908b-75403cfa7d95"
     },
-    "m_Name": "Normal map (Not used - bug)",
+    "m_Name": "Normal map",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Normal map (Not used - bug)",
-    "m_DefaultReferenceName": "_Normal_map_Not_used_bug",
+    "m_RefNameGeneratedByDisplayName": "Normal map",
+    "m_DefaultReferenceName": "_Normal_map",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
